@@ -195,19 +195,20 @@ Copy the file `node-m2m.min.js` from `node_modules/m2m/dist` directory into your
 Include `node-m2m.min.js` on your HTML file `<script src="YOUR_SCRIPT_PATH/node-m2m.min.js"></script>`.
 This will create a global **NodeM2M** object.
 
-#### 3. Create a client object instance from the global NodeM2M object.
-As shown below, create a *client* instance from the global **NodeM2M** object. Using the same api from nodejs console application, you can now access the resources from your remote devices using the various methods from the *client* instance .
+#### 3. Create a *client* object instance from the global NodeM2M object.
+As shown below, create a *client* instance from the **NodeM2M** object's class *Client*. Using the same api from nodejs console application, you can now access the resources from your remote devices using the various methods from the *client* instance .
 
 ```js
 <script> 
 
 // Protect your access token at all times  
 var tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
- 
-var client = new NodeM2M.Client(); 
+
+const { Client } = NodeM2M; 
+var client = new Client(); 
+
 // or 
-// const { Client } = NodeM2M; 
-// var client = new Client(); 
+// var client = new NodeM2M.Client(); 
 
 client.connect(tkn, () => {
 
