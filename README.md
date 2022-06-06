@@ -190,7 +190,7 @@ Using the same device from client-server quicktour, we will access its channel r
 
 #### 2. Install m2m.
 
-Copy the minimized file `node-m2m.min.js` from `node_modules/m2m/dist` directory to your server's public javascript directory.
+Copy the file `node-m2m.min.js` from `node_modules/m2m/dist` directory into your server's public or static directory.
 
 Include `node-m2m.min.js` on your HTML file `<script src="YOUR_SCRIPT_PATH/node-m2m.min.js"></script>`.
 This will create a global **NodeM2M** object.
