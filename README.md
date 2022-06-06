@@ -186,7 +186,7 @@ getData test-data node-m2m is awesome
 Using the same device setup from client-server quicktour, we will access the channel resources using a client from the browser.
 ### Browser Client Setup
 
-#### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login) to create an access token. From the manage security section, generate an access token.
+#### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login). From the *manage security* section, generate an access token.
 
 #### 2. Install m2m.
 
