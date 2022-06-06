@@ -205,6 +205,9 @@ As shown below, create a client instance from the global **NodeM2M** object. Usi
 var tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
  
 var client = new NodeM2M.Client(); 
+// or 
+// const { Client } = NodeM2M; 
+// var client = new Client(); 
 
 client.connect(tkn, () => {
 
