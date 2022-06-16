@@ -4,37 +4,38 @@
    3. [Raspberry Pi Remote Control](#raspberry-pi-remote-control)
    4. [Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
    5. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
-   6. [Create a web application using the fetch api](https://github.com/EdAlegrid/m2m-web-application-demo)
-   7. [Create a web application using only an m2m browser client](https://github.com/EdAlegrid/m2m-browser-client-demo)
+   6. [Web application demo using the fetch api](https://github.com/EdAlegrid/m2m-web-application-demo)
+   7. [Web application demo using only an m2m browser client](https://github.com/EdAlegrid/m2m-browser-client-demo)
    8. [Monitor Data from Remote C# Application through IPC (inter-process communication)](https://github.com/EdAlegrid/csharp-ipc-application-demo)
    9. [File Integrity Monitoring](https://github.com/EdAlegrid/file-integrity-monitoring)
    10. [Create A Simple Gateway Load Balancer](https://github.com/EdAlegrid/gateway-load-balancer)
 
 <br>
 
-[API Reference](https://github.com/Node-M2M/M2M-API)
+[API Reference](https://github.com/EdAlegrid/m2m-api)
 
 ---
 ## Client-Server Using Channel Api
 ![](assets/quicktour.svg)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
+
 In this quick tour, we will create a simple server application that generates random numbers as its sole service and a client application that will access the random number using a *pull* and *push* method.
 
 Using a *pull-method*, the client will capture the random number as one time function call.
 
 Using a *push-method*, the client will watch the value of the random number. The remote device will check the random value every 5 seconds. If the value changes, it will send or *push* the new value to the client.   
 
-Before you start, [create an account](https://www.node-m2m.com/m2m/account/create) and register your remote device. You also need a [node.js](https://nodejs.org/en/) installation on your client and device computers.
+Before you start, ensure you have a [node.js](https://nodejs.org/en/) installation on your client and device computers. [Create an account](https://www.node-m2m.com/m2m/account/create) and register your remote device.
 
 ### Remote Device Setup
 
-#### 1. Create a device project directory and install m2m inside the directory.
+#### 1. Create a device project directory and install *m2m*.
 
 ```js
 $ npm install m2m
 ```
 
-#### 2. Save the code below as device.js within your device project directory.
+#### 2. Save the code below as *device.js* in your device project directory.
 
 ```js
 const m2m = require('m2m');
@@ -78,24 +79,26 @@ The next time you run your application, it will start automatically using a save
 
 However, after a grace period of 15 minutes, you may need to provide your *security code* to restart your application.
 
-Also at anytime, if you're having difficulty or issues restarting your application, you can re-authenticate with an *-r* flag and this will refresh your token as shown below.
+At anytime, if you're having difficulty or issues restarting your application, you can re-authenticate with an `-r` flag. This will refresh your token as shown below.
 ```js
 $ node device.js -r
 ```
 
 ### Remote Client Setup
 
-#### 1. Create a client project directory and install m2m inside the directory.
+#### 1. Create a client project directory and install *m2m*.
 
 ```js
 $ npm install m2m
 ```
 
-#### 2. Save the code below as client.js within your client project directory.
+#### 2. Save the code below as *client.js* in your client project directory.
 
 **Method 1**
 
-If you are accessing only one remote device from your client application, you can use this api. Create an *alias* object using the client's *accessDevice* method as shown in the code below.
+If you are accessing only one remote device from your client application, you can use this api. 
+
+Create an *alias* object using the client's *accessDevice* method as shown in the code below.
 
 ```js
 const m2m = require('m2m');
@@ -132,7 +135,9 @@ client.connect(() => {
 
 **Method 2**
 
-If you are accessing multiple remote devices from your client application, you can use this api. Instead of creating an alias, you can just provide the *device id* through the various data access methods from the client object.
+If you will be accessing multiple remote devices from your client application, use this api.
+
+Instead of creating an alias, just provide the *device id* through the various available methods from the client object.
 
 ```js
 const m2m = require('m2m');
@@ -183,32 +188,32 @@ getData test-data node-m2m is awesome
 ## Using A Browser Client
 <br>
 
-Using the same device from client-server quicktour, we will access its channel resources using a client from the browser.
-### Browser Client Setup
+Using the same device setup from client-server quicktour, we will access the channel resources using a client from the browser.
+## Browser Client Setup
 
-#### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login). From the *manage security* section, generate an access token.
+#### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login) to create an access token. 
 
-#### 2. Install m2m.
+From the manage security section, generate an access token.
 
-Copy the file `node-m2m.min.js` from `node_modules/m2m/dist` directory into your server's public or static directory.
+#### 2. Install *m2m* in your server.
+
+Copy the minimized file `node-m2m.min.js` from `node_modules/m2m/dist` directory into your server's public javascript directory.
 
 Include `node-m2m.min.js` on your HTML file `<script src="YOUR_SCRIPT_PATH/node-m2m.min.js"></script>`.
+
 This will create a global **NodeM2M** object.
 
-#### 3. Create a *client* object instance from the global NodeM2M object.
-As shown below, create a *client* instance from the **NodeM2M** object's class *Client*. Using the same api from nodejs console application, you can now access the resources from your remote devices using the various methods from the *client* instance .
+#### 3. Create a client object instance from the global NodeM2M object.
+
+Access the resources from your remote devices from the available methods directly from the client instance as shown below.
 
 ```js
 <script> 
 
 // Protect your access token at all times  
 var tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
-
-const { Client } = NodeM2M; 
-var client = new Client(); 
-
-// or 
-// var client = new NodeM2M.Client(); 
+ 
+var client = new NodeM2M.Client(); 
 
 client.connect(tkn, () => {
 
@@ -262,11 +267,11 @@ The client will also show an on/off response times providing some insight on the
 
 ### Remote Device Setup
 
-#### 1. Create a device project directory and install m2m and array-gpio inside the directory.
+#### 1. Create a device project directory and install *m2m* and *array-gpio*.
 ```js
 $ npm install m2m array-gpio
 ```
-#### 2. Save the code below as device.js in your device project directory.
+#### 2. Save the code below as *device.js* in your device project directory.
 
 ```js
 const { Device } = require('m2m');
@@ -282,20 +287,21 @@ device.connect(() => {
 ```js
 $ node device.js
 ```
+
 ### Remote Client Setup
 
-#### 1. Create a client project directory and install m2m and array-gpio.
+#### 1. Create a client project directory and install *m2m* and *array-gpio*.
 ```js
 $ npm install m2m array-gpio
 ```
-#### 2. Save the code below as client.js in your client project directory.
+#### 2. Save the code below as *client.js* in your client project directory.
 
 ```js
 const { Client } = require('m2m');
 const { setInput } = require('array-gpio');
 
-let sw1 = setInput(11); // ON switch
-let sw2 = setInput(13); // OFF switch
+let sw1 = setInput(11); // as ON switch
+let sw2 = setInput(13); // as OFF switch
 
 let client = new Client();
 
@@ -331,5 +337,5 @@ client.connect(() => {
 ```js
 $ node client.js
 ```
-The led actuator from remote device should toggle on and off as you press the corresponding ON/OFF switches from the client.
+The led actuator from remote device should toggle *on* and *off* as you press the corresponding ON/OFF switches from the client.
 
