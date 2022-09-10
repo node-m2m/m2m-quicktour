@@ -12,7 +12,7 @@
 
 <br>
 
-[API Reference](https://github.com/EdAlegrid/m2m-api)
+[API Reference](https://github.com/Node-M2M/M2M-API)
 
 ---
 ## Client-Server Using Channel Api
