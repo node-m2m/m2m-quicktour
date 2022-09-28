@@ -1,14 +1,15 @@
 # Node-M2M Quick Tour
    1. [Client-Server Using Channel Api](#client-server-using-channel-api)
-   2. [Using a Browser Client](#using-a-browser-client)
-   3. [Raspberry Pi Remote Control](#raspberry-pi-remote-control)
-   4. [Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
-   5. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
-   6. [Web application demo using the fetch api](https://github.com/EdAlegrid/m2m-web-application-demo)
-   7. [Web application demo using only an m2m browser client](https://github.com/EdAlegrid/m2m-browser-client-demo)
-   8. [Monitor Data from Remote C# Application through IPC (inter-process communication)](https://github.com/EdAlegrid/csharp-ipc-application-demo)
-   9. [File Integrity Monitoring](https://github.com/EdAlegrid/file-integrity-monitoring)
-   10. [Create A Simple Gateway Load Balancer](https://github.com/EdAlegrid/gateway-load-balancer)
+   2. [Publish-Subscribe Pattern](#publish-subscribe-pattern)
+   3. [Using a Browser Client](#using-a-browser-client)
+   4. [Raspberry Pi Remote Control](#raspberry-pi-remote-control)
+   5. [Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
+   6. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
+   7. [Web application demo using the fetch api](https://github.com/EdAlegrid/m2m-web-application-demo)
+   8. [Web application demo using only an m2m browser client](https://github.com/EdAlegrid/m2m-browser-client-demo)
+   9. [Monitor Data from Remote C# Application through IPC (inter-process communication)](https://github.com/EdAlegrid/csharp-ipc-application-demo)
+   10. [File Integrity Monitoring](https://github.com/EdAlegrid/file-integrity-monitoring)
+   11. [Create A Simple Gateway Load Balancer](https://github.com/EdAlegrid/gateway-load-balancer)
 
 <br>
 
@@ -181,6 +182,108 @@ getData random-number 25
 watch random-number 76
 sendData test-data node-m2m is awesome
 getData test-data node-m2m is awesome
+```
+
+<br>
+
+## Publish-Subscribe Pattern
+![](assets/quicktour.svg)
+[](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
+
+This is  a quick tour using publish/subscribe pattern. It is actually the same with watch/setData method using the client/server pattern as shown above. 
+
+### Remote Device Setup
+
+#### 1. Create a device project directory and install *m2m*.
+
+```js
+$ npm install m2m
+```
+
+#### 2. Save the code below as *device.js* in your device project directory.
+
+```js
+const m2m = require('m2m');
+
+let device = new m2m.Device(100);
+
+device.connect(() => {
+  // set 'random-number' channel data resource  
+  device.publish('random-number', (data) => {
+    let rn = Math.floor(Math.random() * 100);
+    data.send(rn);
+  });
+
+});
+```
+#### 3. Start your device application.
+
+```js
+$ node device.js
+```
+### Remote Subscriber Setup
+
+#### 1. Create a client project directory and install *m2m*.
+
+```js
+$ npm install m2m
+```
+
+#### 2. Save the code below as *client.js* in your client project directory.
+
+**Method 1**
+
+If you are accessing only one remote device from your client application, you can use this api. 
+
+Create an *alias* object using the client's *accessDevice* method as shown in the code below.
+
+```js
+const m2m = require('m2m');
+
+let client = new m2m.Client();
+
+client.connect(() => {
+
+  // access the remote device using an alias object
+  let device = client.accessDevice(100);
+
+  device.subscribe('random-number', (data) => {
+    console.log('subscribe random-number', data); // 81, 68, 115 ...
+  });
+
+});
+```
+
+**Method 2**
+
+If you will be accessing multiple remote devices from your client application, use this api.
+
+Instead of creating an alias, just provide the *device id* through the various available methods from the client object.
+
+```js
+const m2m = require('m2m');
+
+let client = new m2m.Client();
+
+client.connect(() => {
+
+  client.subsribe({id:100, channel:'random-number'}, (data) => {
+    console.log('subsribe random-number', data); // 81, 68, 115 ...
+  });
+
+});
+```
+
+#### 3. Start your application.
+```js
+$ node client.js
+```
+You should get a similar output result as shown below.
+```js
+subscribe random-number 76
+subscribe random-number 34
+...
+
 ```
 
 <br>
