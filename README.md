@@ -190,9 +190,18 @@ getData test-data node-m2m is awesome
 ![](assets/quicktour.svg)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
-This is  a quick tour using the publish/subscribe pattern. It is actually the same with watch/setData method using the client/server pattern as shown in the client/server example. 
+This is  a quick tour using the *publish-subscribe* pattern. It is actually similar with the watch/setData method from the *client-server quicktour* example.
 
-### Remote Device Setup
+Here the *topic* name is the same with *channel data* or *channel name* resources from remote devices.
+
+You can subscribe to a specific device or multiple devices by specifying its device *id* aside from the *topic* name.
+
+You can query the available devices in your account and discover the resources (topic/channel, gpio and http) available from each device id.  
+
+You can query them from the browser or using a CLI.  
+
+
+### Remote Device (publisher) Setup
 
 #### 1. Create a device project directory and install *m2m*.
 
@@ -208,7 +217,7 @@ const m2m = require('m2m');
 let device = new m2m.Device(100);
 
 device.connect(() => {
-  // set 'random-number' channel data resource  
+  // publish 'random-number' topic  
   device.publish('random-number', (data) => {
     let rn = Math.floor(Math.random() * 100);
     data.send(rn);
@@ -221,7 +230,7 @@ device.connect(() => {
 ```js
 $ node device.js
 ```
-### Remote Subscriber Setup
+### Remote Client (subscriber) Setup
 
 #### 1. Create a client project directory and install *m2m*.
 
@@ -233,9 +242,7 @@ $ npm install m2m
 
 **Method 1**
 
-If you are accessing only one remote device from your client application, you can use this api. 
-
-Create an *alias* object using the client's *accessDevice* method as shown in the code below.
+Using an alias method.
 
 ```js
 const m2m = require('m2m');
@@ -247,6 +254,7 @@ client.connect(() => {
   // access the remote device using an alias object
   let device = client.accessDevice(100);
 
+  // subscribe to 'random-number' topic from device 100
   device.subscribe('random-number', (data) => {
     console.log('subscribe random-number', data); // 81, 68, 115 ...
   });
@@ -256,9 +264,7 @@ client.connect(() => {
 
 **Method 2**
 
-If you will be accessing multiple remote devices from your client application, use this api.
-
-Instead of creating an alias, just provide the *device id* through the various available methods from the client object.
+Access remote devices directly from the client object. 
 
 ```js
 const m2m = require('m2m');
@@ -267,6 +273,7 @@ let client = new m2m.Client();
 
 client.connect(() => {
 
+  // subscribe to 'random-number' topic from device 100
   client.subsribe({id:100, channel:'random-number'}, (data) => {
     console.log('subsribe random-number', data); // 81, 68, 115 ...
   });
@@ -291,7 +298,7 @@ subscribe random-number 34
 ## Using A Browser Client
 <br>
 
-Using the same device setup from client-server quicktour, we will access the channel resources using a client from the browser.
+Using the same device setup from the client-server quicktour, we will access the channel resources using a client from the browser.
 ## Browser Client Setup
 
 #### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login) to create an access token. 
