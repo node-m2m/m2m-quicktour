@@ -190,7 +190,7 @@ getData test-data node-m2m is awesome
 ![](assets/quicktour.svg)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
-This is  a quick tour using publish/subscribe pattern. It is actually the same with watch/setData method using the client/server pattern as shown above. 
+This is  a quick tour using the publish/subscribe pattern. It is actually the same with watch/setData method using the client/server pattern as shown in the client/server example. 
 
 ### Remote Device Setup
 
