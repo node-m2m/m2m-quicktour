@@ -48,13 +48,13 @@ let testData = 'node-m2m';
 let device = new m2m.Device(100);
 
 device.connect(() => {
-  // set 'random-number' channel data resource  
+  // set 'random-number' as channel data resource  
   device.setData('random-number', (data) => {
     let rn = Math.floor(Math.random() * 100);
     data.send(rn);
   });
   
-  // set 'test-data' channel data resource  
+  // set 'test-data' as another channel data resource  
   device.setData('test-data', (data) => {
     if(data.payload){
       testData =  data.payload;
