@@ -215,7 +215,7 @@ const m2m = require('m2m');
 let device = new m2m.Device(100);
 
 device.connect(() => {
-  // publish 'random-number' topic  
+  // publish 'random-number' topic in your device 
   device.publish('random-number', (data) => {
     let rn = Math.floor(Math.random() * 100);
     data.send(rn);
