@@ -195,9 +195,9 @@ This is  a quick tour using the *publish-subscribe* pattern. It is actually simi
 Here the *topic name* is the same with *channel data* or *channel name* resources from remote devices. 
 You can subscribe to a specific device or multiple devices by specifying its *device id* along with the *topic name*.
 
-You can query the available devices in your account and discover the resources (topic/channel, gpio and http) available from each device.  
-You can query them from the browser interface or using a CLI. Check the API for more information.  
+You can query the available devices in your account and discover the resources (topic/channel, gpio and http) available from each device from the browser interface or using a CLI. Check the API for more information.  
 
+<br>
 
 ### Remote Device (publisher) Setup
 
