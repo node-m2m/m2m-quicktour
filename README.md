@@ -44,19 +44,18 @@ const m2m = require('m2m');
 
 let testData = 'node-m2m';
 
-// create a device object with a device id of 100
-// this id must must be registered with node-m2m
+// the deviceId 100 must must be registered with node-m2m
 let device = new m2m.Device(100);
 
 device.connect(() => {
-  // set 'random-number' as channel data resource  
-  device.setData('random-number', (data) => {
+  // set 'random-number' as publish data resource  
+  device.publish('random-number', (data) => {
     let rn = Math.floor(Math.random() * 100);
     data.send(rn);
   });
   
-  // set 'test-data' as another channel data resource  
-  device.setData('test-data', (data) => {
+  // set 'test-data' as another data resource  
+  device.dataSource('test-data', (data) => {
     if(data.payload){
       testData =  data.payload;
     }
@@ -121,13 +120,17 @@ client.connect(() => {
   device.watchData('random-number', (data) => {
     console.log('watch random-number', data); // 81, 68, 115 ...
   });
+  // or
+  device.subscribe('random-number', (data) => {
+    console.log('subscribe random-number', data); // 81, 68, 115 ...
+  });
 
-  // update test-data
+  // update 'test-data' topic using the payload 'node-m2m is awesome'
   device.sendData('test-data', 'node-m2m is awesome', (data) => {
     console.log('sendData test-data', data);
   });
 
-  // capture updated test-data
+  // then capture the  updated 'test-data' topic
   device.getData('test-data', (data) => {
     console.log('getData test-data', data); // node-m2m is awesome
   });
@@ -149,22 +152,26 @@ let client = new m2m.Client();
 client.connect(() => {
 
   // capture 'random-number' data using a pull method
-  client.getData({id:100, channel:'random-number'}, (data) => {
+  client.getData({id:100, topic:'random-number'}, (data) => {
     console.log('getData random-number', data); // 97
   });
 
   // capture 'random-number' data using a push method
   client.watchData({id:100, channel:'random-number'}, (data) => {
-    console.log('watch random-number', data); // 81, 68, 115 ...
+    console.log('subscribe random-number', data); // 81, 68, 115 ...
+  });
+  // or
+  client.subscribe({id:100, topic:'random-number'}, (data) => {
+    console.log('subscribe random-number', data); // 81, 68, 115 ...
   });
 
-  // update test-data
-  client.sendData({id:100, channel:'test-data', payload:'node-m2m is awesome'}, (data) => {
+  // update 'test-data'
+  client.sendData({id:100, topic:'test-data', payload:'node-m2m is awesome'}, (data) => {
     console.log('sendData test-data', data);
   });
 
-  // capture updated test-data
-  client.getData({id:100, channel:'test-data'}, (data) => {
+  // capture updated 'test-data'
+  client.getData({id:100, topic:'test-data'}, (data) => {
     console.log('getData test-data', data); // node-m2m is awesome
   });
 
@@ -180,7 +187,7 @@ Similar with remote device setup, you will be prompted to enter your credentials
 You should get a similar output result as shown below.
 ```js
 getData random-number 25
-watch random-number 76
+subscribe random-number 76
 sendData test-data node-m2m is awesome
 getData test-data node-m2m is awesome
 ```
@@ -273,7 +280,7 @@ let client = new m2m.Client();
 client.connect(() => {
 
   // subscribe to 'random-number' topic from device 100
-  client.subsribe({id:100, channel:'random-number'}, (data) => {
+  client.subsribe({id:100, topic:'random-number'}, (data) => {
     console.log('subsribe random-number', data); // 81, 68, 115 ...
   });
 
