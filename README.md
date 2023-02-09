@@ -326,22 +326,22 @@ var client = new NodeM2M.Client();
 client.connect(tkn, () => {
 
   // capture 'random-number' data using a pull method
-  client.getData({id:100, channel:'random-number'}, (data) => {
+  client.getData({id:100, topic:'random-number'}, (data) => {
     console.log('getData random-number', data); // 97
   });
 
   // capture 'random-number' data using a push method
-  client.watchData({id:100, channel:'random-number'}, (data) => {
-    console.log('watch random-number', data); // 81, 68, 115 ...
+  client.subscribe({id:100, topic:'random-number'}, (data) => {
+    console.log('subscribe random-number', data); // 81, 68, 115 ...
   });
 
   // update test-data
-  client.sendData({id:100, channel:'test-data', payload:'node-m2m is awesome'}, (data) => {
+  client.sendData({id:100, topic:'test-data', payload:'node-m2m is awesome'}, (data) => {
     console.log('sendData test-data', data);
   });
 
   // capture updated test-data
-  client.getData({id:100, channel:'test-data'}, (data) => {
+  client.getData({id:100, topic:'test-data'}, (data) => {
     console.log('getData test-data', data); // node-m2m is awesome
   });
 
