@@ -57,6 +57,24 @@ device.connect(() => {
 ```js
 $ node device.js
 ```
+
+The first time you run your application, it will ask for your full credentials.
+```js
+? Enter your userid (email):
+? Enter your password:
+? Enter your security code:
+
+```
+The next time you run your application, it will start automatically using a saved user token.
+
+However, after a grace period of 15 minutes, you may need to provide your *security code* to restart your application.
+
+At anytime, if you're having difficulty or issues restarting your application, you can re-authenticate with an `-r` flag. This will refresh your token as shown below.
+```js
+$ node device.js -r
+```
+
+
 ### Remote Client (subscriber) Setup
 
 #### 1. Create a client project directory and install *m2m*.
@@ -91,7 +109,7 @@ client.connect(() => {
 
 **Method 2**
 
-Access remote devices directly from the client object. 
+Access the remote device directly from the client object. 
 
 ```js
 const m2m = require('m2m');
@@ -160,22 +178,6 @@ device.connect(() => {
 $ node device.js
 ```
 
-The first time you run your application, it will ask for your full credentials.
-```js
-? Enter your userid (email):
-? Enter your password:
-? Enter your security code:
-
-```
-The next time you run your application, it will start automatically using a saved user token.
-
-However, after a grace period of 15 minutes, you may need to provide your *security code* to restart your application.
-
-At anytime, if you're having difficulty or issues restarting your application, you can re-authenticate with an `-r` flag. This will refresh your token as shown below.
-```js
-$ node device.js -r
-```
-
 ### Remote Client Setup
 
 #### 1. Create a client project directory and install *m2m*.
@@ -187,8 +189,6 @@ $ npm install m2m
 #### 2. Save the code below as *client.js* in your client project directory.
 
 **Method 1**
-
-If you are accessing only one remote device from your client application, you can use this api. 
 
 Create an *alias* object using the client's *accessDevice* method as shown in the code below.
 
