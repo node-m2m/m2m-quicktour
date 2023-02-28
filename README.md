@@ -27,7 +27,7 @@
 
 Before you start, ensure you have a [node.js](https://nodejs.org/en/) installation on your client and device computers. [Create an account](https://www.node-m2m.com/m2m/account/create) and register your remote device.
 
-### Remote Device (publisher) Setup
+### Device (publisher) Setup
 
 #### 1. Create a device project directory and install *m2m*.
 
@@ -75,7 +75,7 @@ $ node device.js -r
 ```
 
 
-### Remote Client (subscriber) Setup
+### Client (subscriber) Setup
 
 #### 1. Create a client project directory and install *m2m*.
 
@@ -145,7 +145,7 @@ subscribe random-number 34
 [](assets/quicktour.svg)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
-### Remote Device Setup
+### Device Setup
 
 #### 1. Create a device project directory and install *m2m*.
 
@@ -178,7 +178,7 @@ device.connect(() => {
 $ node device.js
 ```
 
-### Remote Client Setup
+### Client Setup
 
 #### 1. Create a client project directory and install *m2m*.
 
