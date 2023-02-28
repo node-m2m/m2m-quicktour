@@ -21,7 +21,7 @@
 <br>
 
 ## Publish-Subscribe Pattern
-![](assets/quicktour.svg)
+[](assets/quicktour.svg)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
 
@@ -87,7 +87,7 @@ $ npm install m2m
 
 **Method 1**
 
-Using an alias method.
+Creating a device object alias from .accessDevice() method.
 
 ```js
 const m2m = require('m2m');
@@ -142,7 +142,7 @@ subscribe random-number 34
 
 
 ## Client-Server Pattern
-![](assets/quicktour.svg)
+[](assets/quicktour.svg)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
 ### Remote Device Setup
