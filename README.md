@@ -44,12 +44,10 @@ const m2m = require('m2m');
 let device = new m2m.Device(100);
 
 device.connect(() => {
-  // publish 'random-number' topic in your device 
   device.publish('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
     ws.send(rn);
   });
-
 });
 ```
 #### 3. Start your device application.
@@ -99,7 +97,6 @@ client.connect(() => {
   // access the remote device using an alias object
   let device = client.accessDevice(100);
 
-  // subscribe to 'random-number' topic from device 100
   device.subscribe('random-number', (data) => {
     console.log('subscribe random-number', data); // 81, 68, 115 ...
   });
@@ -118,7 +115,6 @@ let client = new m2m.Client();
 
 client.connect(() => {
 
-  // subscribe to 'random-number' topic from device 100
   client.subsribe({id:100, topic:'random-number'}, (data) => {
     console.log('subsribe random-number', data); // 81, 68, 115 ...
   });
@@ -163,7 +159,6 @@ let testData = 'node-m2m';
 let device = new m2m.Device(100);
 
 device.connect(() => {
-  // set 'test-data' as data resource  
   device.dataSource('test-data', (ws) => {
     if(ws.payload){
       testData =  ws.payload;
