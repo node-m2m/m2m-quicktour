@@ -14,7 +14,7 @@
 
 <br>
 
-[API Reference](https://github.com/Node-M2M/M2M-API)
+<!--- [API Reference](https://github.com/Node-M2M/M2M-API) --->
 
 ---
 
