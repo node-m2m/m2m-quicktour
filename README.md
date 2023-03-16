@@ -314,6 +314,8 @@ Using your browser dev tools, you should get similar results as shown below.
 read test-data node-m2m
 write test-data node-m2m is awesome
 read test-data node-m2m is awesome
+subsribe random-number 93
+
 ```
 <br>
 
