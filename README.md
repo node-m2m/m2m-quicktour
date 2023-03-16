@@ -264,7 +264,7 @@ Using the same device setup from the client-server quicktour, we will access the
 
 #### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login) to create an access token. 
 
-From the manage security section, generate an access token.
+From the *manage security* section in the main menu under the *user account* tab, generate a web access token.
 
 #### 2. Install *m2m* in your server.
 
