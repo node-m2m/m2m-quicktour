@@ -197,19 +197,19 @@ client.connect(() => {
   // access the remote device using an alias object
   let device = client.accessDevice(100);
 
-  // get the current data from 'test-data' topic
-  device.getData('test-data', (data) => {
-    console.log('getData test-data', data); // node-m2m
+  // read the current data from 'test-data' topic
+  device.read('test-data', (data) => {
+    console.log('read test-data', data); // node-m2m
   });
 
   // update 'test-data' topic using the payload 'node-m2m is awesome'
-  device.sendData('test-data', 'node-m2m is awesome', (data) => {
-    console.log('sendData test-data', data);
+  device.write('test-data', 'node-m2m is awesome', (data) => {
+    console.log('write test-data', data);
   });
 
-  // get the updated 'test-data' topic
-  device.getData('test-data', (data) => {
-    console.log('getData test-data', data); // node-m2m is awesome
+  // read the updated 'test-data' topic
+  device.read('test-data', (data) => {
+    console.log('read test-data', data); // node-m2m is awesome
   });
 
 });
@@ -226,16 +226,16 @@ let client = new m2m.Client();
 
 client.connect(() => {
 
-  client.getData({id:100, topic:'test-data'}, (data) => {
-    console.log('getData test-data', data); // node-m2m
+  client.read({id:100, topic:'test-data'}, (data) => {
+    console.log('read test-data', data); // node-m2m
   });
 
-  client.sendData({id:100, topic:'test-data', payload:'node-m2m is awesome'}, (data) => {
-    console.log('sendData test-data', data);
+  client.write({id:100, topic:'test-data', payload:'node-m2m is awesome'}, (data) => {
+    console.log('write test-data', data);
   });
 
-  client.getData({id:100, topic:'test-data'}, (data) => {
-    console.log('getData test-data', data); // node-m2m is awesome
+  client.read({id:100, topic:'test-data'}, (data) => {
+    console.log('read test-data', data); // node-m2m is awesome
   });
 
 });
@@ -249,9 +249,9 @@ Similar with remote device setup, you will be prompted to enter your credentials
 
 You should get a similar output result as shown below.
 ```js
-getData test-data node-m2m
-sendData test-data node-m2m is awesome
-getData test-data node-m2m is awesome
+read test-data node-m2m
+write test-data node-m2m is awesome
+read test-data node-m2m is awesome
 ```
 
 <br>
@@ -288,16 +288,16 @@ var client = new NodeM2M.Client();
 
 client.connect(tkn, () => {
 
-  client.getData({id:100, topic:'test-data'}, (data) => {
-    console.log('getData test-data', data); // node-m2m
+  client.read({id:100, topic:'test-data'}, (data) => {
+    console.log('read test-data', data); // node-m2m
   });
 
-  client.sendData({id:100, topic:'test-data', payload:'node-m2m is awesome'}, (data) => {
-    console.log('sendData test-data', data);
+  client.write({id:100, topic:'test-data', payload:'node-m2m is awesome'}, (data) => {
+    console.log('write test-data', data);
   });
 
-  client.getData({id:100, topic:'test-data'}, (data) => {
-    console.log('getData test-data', data); // node-m2m is awesome
+  client.read({id:100, topic:'test-data'}, (data) => {
+    console.log('read test-data', data); // node-m2m is awesome
   });
 
 });
@@ -307,9 +307,9 @@ client.connect(tkn, () => {
 
 Using your browser dev tools, you should get similar results as shown below. 
 ```js
-getData test-data node-m2m
-sendData test-data node-m2m is awesome
-getData test-data node-m2m is awesome
+read test-data node-m2m
+write test-data node-m2m is awesome
+read test-data node-m2m is awesome
 ```
 <br>
 
