@@ -288,6 +288,10 @@ var client = new NodeM2M.Client();
 
 client.connect(tkn, () => {
 
+  client.subsribe({id:100, topic:'random-number'}, (data) => {
+    console.log('subsribe random-number', data); // 81, 68, 115 ...
+  });
+
   client.read({id:100, topic:'test-data'}, (data) => {
     console.log('read test-data', data); // node-m2m
   });
