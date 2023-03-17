@@ -21,13 +21,13 @@
 <br>
 
 ## Publish-Subscribe Pattern
-[](assets/quicktour.svg)
+![](assets/m2m-pub-sub.svg)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
 
 Before you start, ensure you have a [node.js](https://nodejs.org/en/) installation on your client and device computers. [Create an account](https://www.node-m2m.com/m2m/account/create) and register your remote device.
 
-### Device (publisher) Setup
+### Device Setup
 
 #### 1. Create a device project directory and install *m2m*.
 
@@ -73,7 +73,7 @@ $ node device.js -r
 ```
 
 
-### Client (subscriber) Setup
+### Client Setup
 
 #### 1. Create a client project directory and install *m2m*.
 
@@ -138,7 +138,7 @@ subscribe random-number 34
 
 
 ## Client-Server Pattern
-[](assets/quicktour.svg)
+![](assets/m2m-pub-sub.svg)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
 ### Device Setup
