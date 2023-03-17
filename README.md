@@ -3,14 +3,15 @@
    2. [Client-Server Pattern](#client-server-pattern)
    3. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
    4. [Using a Browser Client](#using-a-browser-client)
-   5. [Raspberry Pi Remote Control](#raspberry-pi-remote-control)
-   6. [Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
-   7. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
+   5. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
+   6. [Raspberry Pi Remote Control](#raspberry-pi-remote-control)
+   7. [Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
+   <!--7. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
    8. [Web application demo using the fetch api](https://github.com/EdAlegrid/m2m-web-application-demo)
    9. [Web application demo using only an m2m browser client](https://github.com/EdAlegrid/m2m-browser-client-demo)
    10. [Monitor Data from Remote C# Application through IPC (inter-process communication)](https://github.com/EdAlegrid/csharp-ipc-application-demo)
    11. [File Integrity Monitoring](https://github.com/EdAlegrid/file-integrity-monitoring)
-   12. [Create A Simple Gateway Load Balancer](https://github.com/EdAlegrid/gateway-load-balancer)
+   12. [Create A Simple Gateway Load Balancer](https://github.com/EdAlegrid/gateway-load-balancer)-->
 
 <br>
 
