@@ -262,14 +262,14 @@ read test-data node-m2m is awesome
 ## Using A Browser Client
 <br>
 
-Using the same device setup from the client-server quicktour, we will access the channel resources using a client from the browser.
+Using the same remote device from the client-server quicktour, we will use a browser client to access its available resources.
 ## Browser Client Setup
 
 #### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login) to create an access token. 
 
 From the *manage security* section in the main menu under the *user account* tab, generate a web access token.
 
-#### 2. Install *m2m* in your server.
+#### 2. Install *m2m* in your http server.
 
 Copy the minimized file `node-m2m.min.js` from `node_modules/m2m/dist` directory into your server's public javascript directory.
 
@@ -279,7 +279,7 @@ This will create a global **NodeM2M** object.
 
 #### 3. Create a client object instance from the global NodeM2M object.
 
-Access the resources from your remote devices from the available methods directly from the client instance as shown below.
+Access the resources from the remote device directly from the client instance as shown below.
 
 ```js
 <script> 
@@ -312,7 +312,7 @@ client.connect(tkn, () => {
 </script>
 ```
 
-Using your browser dev tools, you should get similar results as shown below. 
+Using your browser dev tools, you should get a similar result as shown below. 
 ```js
 read test-data node-m2m
 write test-data node-m2m is awesome
