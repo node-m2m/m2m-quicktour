@@ -191,8 +191,9 @@ const m2m = require('m2m');
 
 let client = new m2m.Client();
 
-client.connect(() => {
+client.connect(app);
 
+function app(){
   // access the remote device using an alias object
   let device = client.accessDevice(100);
 
@@ -210,8 +211,7 @@ client.connect(() => {
   device.read('test-data', (data) => {
     console.log('read test-data', data); // node-m2m is awesome
   });
-
-});
+}
 ```
 
 **Method 2**
@@ -223,8 +223,9 @@ const m2m = require('m2m');
 
 let client = new m2m.Client();
 
-client.connect(() => {
+client.connect(app);
 
+function app(){
   client.read({id:100, topic:'test-data'}, (data) => {
     console.log('read test-data', data); // node-m2m
   });
@@ -236,8 +237,7 @@ client.connect(() => {
   client.read({id:100, topic:'test-data'}, (data) => {
     console.log('read test-data', data); // node-m2m is awesome
   });
-
-});
+}
 ```
 
 #### 3. Start your application.
@@ -285,8 +285,9 @@ var tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
  
 var client = new NodeM2M.Client(); 
 
-client.connect(tkn, () => {
+client.connect(tkn, app);
 
+function app(){
   client.subsribe({id:100, topic:'random-number'}, (data) => {
     console.log('subsribe random-number', data); // 81, 68, 115 ...
   });
@@ -302,8 +303,7 @@ client.connect(tkn, () => {
   client.read({id:100, topic:'test-data'}, (data) => {
     console.log('read test-data', data); // node-m2m is awesome
   });
-
-});
+}
 
 </script>
 ```
@@ -376,8 +376,9 @@ sw2.setR(0);
 
 let client = new Client();
 
-client.connect(() => {
+client.connect(app);
 
+function app(){
   let t1 = null;
   let device = client.accessDevice(200);
 
@@ -402,7 +403,7 @@ client.connect(() => {
       });
     }
   });
-});
+}
 ```
 #### 3. Start your application.
 ```js
