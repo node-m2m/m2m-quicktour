@@ -96,14 +96,12 @@ const m2m = require('m2m');
 let client = new m2m.Client();
 
 client.connect(() => {
-
   // access the remote device using an alias object
   let device = client.accessDevice(100);
 
   device.subscribe('random-number', (data) => {
     console.log('subscribe random-number', data); // 81, 68, 115 ...
   });
-
 });
 ```
 
@@ -117,11 +115,9 @@ const m2m = require('m2m');
 let client = new m2m.Client();
 
 client.connect(() => {
-
   client.subsribe({id:100, topic:'random-number'}, (data) => {
     console.log('subsribe random-number', data); // 81, 68, 115 ...
   });
-
 });
 ```
 
