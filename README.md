@@ -213,6 +213,31 @@ function app(){
   });
 }
 ```
+async/await api
+```js
+const m2m = require('m2m');
+
+let client = new m2m.Client();
+
+async function app(){
+
+  await client.connect();
+
+  let device = client.accessDevice(100);
+
+  let rd1 = await device.read('test-data'); 
+  console.log('read test-data', rd1); // node-m2m
+
+  let wd = await device.write('test-data', 'node-m2m is awesome');
+  console.log('write test-data', wd);
+
+  let rd2 = await device.read('test-data');
+  console.log('read test-data', rd2); // node-m2m is awesome
+}
+app();
+
+```
+
 
 **Method 2**
 
@@ -238,6 +263,28 @@ function app(){
     console.log('read test-data', data); // node-m2m is awesome
   });
 }
+
+async/await api
+```js
+const m2m = require('m2m');
+
+let client = new m2m.Client();
+
+async function app(){
+
+  await client.connect(app);
+
+  let rd1 = await client.read({id:100, topic:'test-data'}); 
+  console.log('read test-data', rd1); // node-m2m
+
+  let wd = await client.write({id:100, topic:'test-data', payload:'node-m2m is awesome'});
+  console.log('write test-data', wd);
+
+  let rd2 = await client.read({id:100, topic:'test-data'});
+  console.log('read test-data', rd2); // node-m2m is awesome
+}
+app();
+
 ```
 
 #### 3. Start your application.
