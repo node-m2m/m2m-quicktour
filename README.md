@@ -263,7 +263,7 @@ function app(){
     console.log('read test-data', data); // node-m2m is awesome
   });
 }
-
+```
 async/await api
 ```js
 const m2m = require('m2m');
@@ -284,7 +284,6 @@ async function app(){
   console.log('read test-data', rd2); // node-m2m is awesome
 }
 app();
-
 ```
 
 #### 3. Start your application.
