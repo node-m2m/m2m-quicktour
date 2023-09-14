@@ -114,11 +114,14 @@ const m2m = require('m2m');
 
 let client = new m2m.Client();
 
-client.connect(() => {
+async function app(){
+  await client.connect();
+
   client.subsribe({id:100, topic:'random-number'}, (data) => {
     console.log('subsribe random-number', data); // 81, 68, 115 ...
   });
-});
+}
+app();
 ```
 
 #### 3. Start your application.
