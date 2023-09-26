@@ -53,6 +53,24 @@ device.connect(() => {
   });
 });
 ```
+async/await
+```js
+const m2m = require('m2m');
+
+// the deviceId 100 must must be registered with node-m2m
+let device = new m2m.Device(100);
+
+async function app(){
+  await device.connect();
+
+  device.publish('random-number', (ws) => {
+    let rn = Math.floor(Math.random() * 100);
+    ws.send(rn);
+  });
+}
+app();
+```
+
 #### 3. Start your device application.
 
 ```js
@@ -169,6 +187,27 @@ device.connect(() => {
   });
 });
 ```
+async/await
+```js
+const m2m = require('m2m');
+
+let testData = 'node-m2m';
+
+let device = new m2m.Device(100);
+
+async function app(){
+  await device.connect();
+
+  device.dataSource('test-data', (ws) => {
+    if(ws.payload){
+      testData =  ws.payload;
+    }
+    ws.send(testData);
+  });
+}
+app();
+```
+
 #### 3. Start your device application.
 
 ```js
@@ -223,7 +262,6 @@ const m2m = require('m2m');
 let client = new m2m.Client();
 
 async function app(){
-
   await client.connect();
 
   let device = client.accessDevice(100);
