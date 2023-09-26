@@ -1,4 +1,4 @@
-# Node-M2M Quick Tour
+# Quick Tour
    1. [M2M Publish-Subscribe Pattern](#publish-subscribe-pattern)
    2. [M2M Client-Server Pattern](#client-server-pattern)
    3. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
