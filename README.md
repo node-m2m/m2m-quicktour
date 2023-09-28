@@ -8,6 +8,7 @@
    7. [Raspberry Pi Remote Control](#raspberry-pi-remote-control)
    8. [M2M Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
    9. [Create a Server Load Balancer for Edge Computing](https://github.com/Node-M2M/edge-load-balancing)
+   10.[Edge C/C++ Connector Application](https://github.com/Node-M2M/CppEdgeConnector)
    <!--7. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
    8. [Web application demo using the fetch api](https://github.com/EdAlegrid/m2m-web-application-demo)
    9. [Web application demo using only an m2m browser client](https://github.com/EdAlegrid/m2m-browser-client-demo)
