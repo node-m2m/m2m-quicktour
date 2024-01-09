@@ -45,7 +45,7 @@ $ npm install m2m
 ```js
 const m2m = require('m2m');
 
-// the deviceId 100 must must be registered with node-m2m
+// The deviceId 100 must be registered with node-m2m
 let device = new m2m.Device(100);
 
 device.connect(() => {
@@ -59,7 +59,7 @@ async/await
 ```js
 const m2m = require('m2m');
 
-// the deviceId 100 must must be registered with node-m2m
+// The deviceId 100 must be registered with node-m2m
 let device = new m2m.Device(100);
 
 async function app(){
