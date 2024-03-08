@@ -48,21 +48,29 @@ const m2m = require('m2m');
 // The deviceId 100 must be registered with node-m2m
 let device = new m2m.Device(100);
 
+// Choose one of the following connect api
+
+// 1. Connect using a callback
 device.connect(() => {
   device.publish('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
     ws.send(rn);
   });
 });
-```
-async/await
-```js
-const m2m = require('m2m');
 
-// The deviceId 100 must be registered with node-m2m
-let device = new m2m.Device(100);
+// 2. Connect using a promise
+device.connect()
+.then(console.log) // success
+.then(() => {
+   device.publish('random-number', (ws) => {
+    let rn = Math.floor(Math.random() * 100);
+    ws.send(rn);
+  });
+})
+.catch(console.log)
 
-async function app(){
+// 3. Connect using async/await
+async function main(){
   await device.connect();
 
   device.publish('random-number', (ws) => {
@@ -70,9 +78,9 @@ async function app(){
     ws.send(rn);
   });
 }
-app();
-```
 
+main();
+```
 #### 3. Start your device application.
 
 ```js
@@ -83,8 +91,6 @@ The first time you run your application, it will ask for your full credentials.
 ```js
 ? Enter your userid (email):
 ? Enter your password:
-? Enter your security code:
-
 ```
 The next time you run your application, it will start automatically using a saved user token.
 
@@ -108,7 +114,7 @@ $ npm install m2m
 
 **Method 1**
 
-Creating a device object alias from .accessDevice() method.
+Create an alias object from .access() method.
 
 ```js
 const m2m = require('m2m');
@@ -116,10 +122,9 @@ const m2m = require('m2m');
 let client = new m2m.Client();
 
 client.connect(() => {
-  // access the remote device using an alias object
-  let device = client.accessDevice(100);
+  let m2mClient = client.access(100);
 
-  device.subscribe('random-number', (data) => {
+  m2mClient.subscribe('random-number', (data) => {
     console.log('subscribe random-number', data); // 81, 68, 115 ...
   });
 });
@@ -134,14 +139,15 @@ const m2m = require('m2m');
 
 let client = new m2m.Client();
 
-async function app(){
+async function main(){
   await client.connect();
 
   client.subsribe({id:100, topic:'random-number'}, (data) => {
     console.log('subsribe random-number', data); // 81, 68, 115 ...
   });
 }
-app();
+
+main();
 ```
 
 #### 3. Start your application.
