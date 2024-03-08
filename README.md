@@ -54,7 +54,7 @@ let device = new m2m.Device(100);
 device.connect(() => {
   device.publish('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
-    ws.send(rn);
+    ws.send({id:ws.id, topic:ws.topic, value:rn});
   });
 });
 
@@ -64,7 +64,7 @@ device.connect()
 .then(() => {
    device.publish('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
-    ws.send(rn);
+    ws.send({id:ws.id, topic:ws.topic, value:rn});
   });
 })
 .catch(console.log)
@@ -75,7 +75,7 @@ async function main(){
 
   device.publish('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
-    ws.send(rn);
+    ws.send({id:ws.id, topic:ws.topic, value:rn});
   });
 }
 
@@ -125,7 +125,7 @@ client.connect(() => {
   let m2mClient = client.access(100);
 
   m2mClient.subscribe('random-number', (data) => {
-    console.log('subscribe random-number', data); // 81, 68, 115 ...
+    console.log('subscribe random-number', data);
   });
 });
 ```
@@ -143,7 +143,7 @@ async function main(){
   await client.connect();
 
   client.subsribe({id:100, topic:'random-number'}, (data) => {
-    console.log('subsribe random-number', data); // 81, 68, 115 ...
+    console.log('subsribe random-number', data);
   });
 }
 
@@ -156,10 +156,10 @@ $ node client.js
 ```
 You should get a similar output result as shown below.
 ```js
-subscribe random-number 76
-subscribe random-number 34
+subscribe random-number {id:100, topic:'random-number', value:81}
+subscribe random-number {id:100, topic:'random-number', value:31}
+subscribe random-number {id:100, topic:'random-number', value:68}
 ...
-
 ```
 
 <br>
