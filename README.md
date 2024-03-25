@@ -1,15 +1,14 @@
 # Quick Tour
    1. [M2M Publish-Subscribe Pattern](#publish-subscribe-pattern)
    2. [M2M Client-Server Pattern](#client-server-pattern)
-   3. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
-   4. [M2M Browser Client](#using-a-browser-client)
+   3. [M2M Browser Client](#using-a-browser-client)
+   4. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
    5. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
    6. [Create an M2M Bridge Gateway](https://github.com/Node-M2M/m2m-bridge-gateway)
-   7. [Raspberry Pi Remote Control](#raspberry-pi-remote-control)
-   8. [M2M Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
-   9. [Create a Server Load Balancer for Edge Computing](https://github.com/Node-M2M/edge-load-balancing)
-   10. [Edge C/C++ Connector Application](https://github.com/Node-M2M/CppEdgeConnector)
-   11. [Edge C# Connector Application](https://github.com/Node-M2M/CsharpEdgeConnector)
+   7. [M2M Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
+   8. [Create a Server Load Balancer for Edge Computing](https://github.com/Node-M2M/edge-load-balancing)
+   9. [Edge C/C++ Connector Application](https://github.com/Node-M2M/CppEdgeConnector)
+   10. [Edge C# Connector Application](https://github.com/Node-M2M/CsharpEdgeConnector)
    <!--7. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
    8. [Web application demo using the fetch api](https://github.com/EdAlegrid/m2m-web-application-demo)
    9. [Web application demo using only an m2m browser client](https://github.com/EdAlegrid/m2m-browser-client-demo)
@@ -26,326 +25,389 @@
 <br>
 
 ## Publish-Subscribe Pattern
-![](assets/m2m-pub-sub.svg)
+![](assets/m2m-pub-sub.png)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
 
-Before you start, ensure you have a [node.js](https://nodejs.org/en/) installation on your client and device computers. [Create an account](https://www.node-m2m.com/m2m/account/create) and register your remote device.
+Before you start, &nbsp;ensure you have a [node.js](https://nodejs.org/en/) installation in all of your client and server endpoints.
 
-### Device Setup
+[Create an account](https://www.node-m2m.com/m2m/account/create) and register your remote server endpoints.
 
-#### 1. Create a device project directory and install *m2m*.
+#### Install *m2m* on your client and server endpoints.
 
 ```js
 $ npm install m2m
 ```
 
-#### 2. Save the code below as *device.js* in your device project directory.
+### Server 1
+
+#### 1. Choose any connect api below and save the code as *server.js* in your project directory.
+
+Connect using callback
+```js
+const m2m = require('m2m');
+
+let server = new m2m.Server(100);
+
+server.connect(() => {
+  // server publish resource 
+  server.publish('random-number', (ws) => {
+    let rn = Math.floor(Math.random() * 100);
+    let data = {id:ws.id, topic:ws.topic, value:rn};
+    ws.send(data);
+  });
+});
+```
+Connect using async/await
 
 ```js
 const m2m = require('m2m');
 
-// The deviceId 100 must be registered with node-m2m
-let device = new m2m.Device(100);
+let server = new m2m.Server(100);
 
-// Choose one of the following connect api
-
-// 1. Connect using a callback
-device.connect(() => {
-  device.publish('random-number', (ws) => {
-    let rn = Math.floor(Math.random() * 100);
-    ws.send({id:ws.id, topic:ws.topic, value:rn});
-  });
-});
-
-// 2. Connect using a promise
-device.connect()
-.then(console.log) // success
-.then(() => {
-   device.publish('random-number', (ws) => {
-    let rn = Math.floor(Math.random() * 100);
-    ws.send({id:ws.id, topic:ws.topic, value:rn});
-  });
-})
-.catch(console.log)
-
-// 3. Connect using async/await
-async function main(){
-  await device.connect();
-
-  device.publish('random-number', (ws) => {
-    let rn = Math.floor(Math.random() * 100);
-    ws.send({id:ws.id, topic:ws.topic, value:rn});
-  });
+let main = async () => {
+  await server.connect();
+  // add server resources here
 }
 
 main();
 ```
-#### 3. Start your device application.
+Connect using promise
 
 ```js
-$ node device.js
+const m2m = require('m2m');
+
+let server = new m2m.Server(100);
+
+m2m.connect()
+.then(console.log) // success
+.then(() => {
+  // add server resources here
+})  
+.catch(console.log)
+
+```
+#### 2. Start your server 1 application.
+
+```js
+$ node server.js
 ```
 
-The first time you run your application, it will ask for your full credentials.
+The first time you run your application, &nbsp;it will ask for your userid and password credentials.
 ```js
 ? Enter your userid (email):
 ? Enter your password:
+
 ```
-The next time you run your application, it will start automatically using a saved user token.
+The next time you run your application, &nbsp;it will start automatically using a saved user token.
 
-However, after a grace period of 15 minutes, you may need to provide your *security code* to restart your application.
-
-At anytime, if you're having difficulty or issues restarting your application, you can re-authenticate with an `-r` flag. This will refresh your token as shown below.
+At anytime, &nbsp;if you're having difficulty or issues restarting your application, &nbsp;you can re-authenticate with an `-r` flag. This will refresh your token as shown below.
 ```js
-$ node device.js -r
+$ node server.js -r
 ```
 
+### Server 2
 
-### Client Setup
-
-#### 1. Create a client project directory and install *m2m*.
-
-```js
-$ npm install m2m
-```
-
-#### 2. Save the code below as *client.js* in your client project directory.
-
-**Method 1**
-
-Create an alias object from .access() method.
+#### 1. Save the code below as *server.js* in your project directory.
 
 ```js
 const m2m = require('m2m');
 
-let client = new m2m.Client();
+let server = new m2m.Server(200);
 
-client.connect(() => {
-  let m2mClient = client.access(100);
+let main = async () => {
+  let result = await device.connect();
+  console.log(result); // success
 
-  m2mClient.subscribe('random-number', (data) => {
-    console.log('subscribe random-number', data);
-  });
-});
-```
-
-**Method 2**
-
-Access the remote device directly from the client object. 
-
-```js
-const m2m = require('m2m');
-
-let client = new m2m.Client();
-
-async function main(){
-  await client.connect();
-
-  client.subsribe({id:100, topic:'random-number'}, (data) => {
-    console.log('subsribe random-number', data);
+  device.pub('random-number', (ws) => {
+    let rn = Math.floor(Math.random() * 100);
+    ws.send({id:ws.id, topic:ws.topic, value:rn});
   });
 }
 
 main();
 ```
 
-#### 3. Start your application.
+#### 2. Start your server 2 application.
+
+```js
+$ node server.js
+```
+
+### Client
+
+#### 1. Save the code below as *client.js* in your project directory.
+
+**Method 1:** &nbsp; Access each server using the access method
+```js
+const { Client } = require('m2m');
+
+let client = new Client();
+
+client.connect()
+.then(console.log) // success
+.then(() => {
+  let client1 = client.access(100);
+  let client2 = client.access(200);
+
+  // using the default 5 secs polling interval
+  client1.subscribe('random-number', (data) => {
+    console.log('client1 subscribe random-number', data);
+  });
+  
+  // using a polling interval of 10 secs 
+  client2.sub('random-number', 10000, (data) => {
+    console.log('client2 subscribe random-number', data);
+  });
+
+  setTimeout(() => {
+    client1.unsubscribe('random-number');
+    console.log('client1 unsub');
+  }, 30000);
+
+  setTimeout(async () => {
+    // confirm unsubscribe if successful
+    let result = await client2.unsub('random-number');
+    console.log('client2 unsub', result); // true if successful
+  }, 60000);
+})
+.catch(console.log)
+```
+
+**Method 2:** &nbsp; Access each server directly from the client object by providing the server id  
+```js
+const { Client } = require('m2m');
+
+let client = new Client();
+
+client.connect()
+.then(console.log) // success
+.then(() => {
+
+  // using the default 5 secs polling interval
+  client.subscribe({id:100, topic:'random-number'}, (data) => {
+    console.log('client1 subscribe random-number', data);
+  });
+  
+  // using a polling interval of 10 secs 
+  client.sub({id:200, topic:'random-number', interval:10000}, (data) => {
+    console.log('client2 subscribe random-number', data);
+  });
+
+  setTimeout(() => {
+    client.unsubscribe({id:100, topic:'random-number'});
+    console.log('client1 unsub');
+  }, 30000);
+
+  setTimeout(async () => {
+    // confirm unsubscribe if successful
+    let result = await client.unsub({id:200, topic:'random-number'});
+    console.log('client2 unsub', result); // true if successful
+  }, 60000);
+})
+.catch(console.log)
+```
+
+#### 3. Start your client application.
 ```js
 $ node client.js
 ```
 You should get a similar output result as shown below.
 ```js
-subscribe random-number {id:100, topic:'random-number', value:81}
-subscribe random-number {id:100, topic:'random-number', value:31}
-subscribe random-number {id:100, topic:'random-number', value:68}
-...
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 18 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 8 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 98 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 96 }
+client1 unsub
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 34 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 15 }
+client2 unsub true
 ```
 
 <br>
 
 
 ## Client-Server Pattern
-![](assets/m2m-pub-sub.svg)
+![](assets/m2m-pub-sub.png)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
-### Device Setup
+### Server 1
 
-#### 1. Create a device project directory and install *m2m*.
-
-```js
-$ npm install m2m
-```
-
-#### 2. Save the code below as *device.js* in your device project directory.
+#### 1. Save the code below as *server.js* in your server 1 project directory.
 
 ```js
-const m2m = require('m2m');
+const { Server } = require('m2m');
 
-let testData = 'node-m2m';
+let server = new Server(100);
 
-let device = new m2m.Device(100);
+server.connect(() => {
+  // server 1 available resources 
+  server.publish('random-number', (ws) => {
+    let rn = Math.floor(Math.random() * 100);
+    ws.send({id:ws.id, topic:ws.topic, value:rn});
+  });
 
-device.connect(() => {
-  device.dataSource('test-data', (ws) => {
-    if(ws.payload){
-      testData =  ws.payload;
+  server.dataSource('/machine-1', (ws) => { // common resources both for client read and write method 
+  //server.read('/machine-1', (ws) => { // Only a client read method can access a read resource   
+    let data = { id:ws.id, rootTopic:ws.rootTopic, subTopic:ws.subTopic }
+
+    if(ws.topic === '/machine-1/sensor-1'){
+      let rn = Math.floor(Math.random() * 200);
+      data.type = 'sensor-1';
+      data.value = rn; 
     }
-    ws.send(testData);
+    else if(ws.topic === '/machine-1/sensor-2'){
+      let rn = Math.floor(Math.random() * 400);
+      data.type = 'sensor-2';
+      data.value = rn; 
+    }
+    else if(ws.topic === '/machine-1' && ws.payload){
+      data.type = ws.payload.type;
+      data.value = ws.payload.value;
+    }  
+    ws.send(data);
   });
 });
 ```
-async/await
+
+#### 2. Start your server 1 application.
+
 ```js
-const m2m = require('m2m');
+$ node server.js
+```
 
-let testData = 'node-m2m';
+### Server 2
 
-let device = new m2m.Device(100);
+#### 1. Save the code below as *server.js* in your server 2 project directory.
 
-async function app(){
-  await device.connect();
+callback
 
-  device.dataSource('test-data', (ws) => {
-    if(ws.payload){
-      testData =  ws.payload;
-    }
-    ws.send(testData);
+```js
+const { Server } = require('m2m');
+
+let server = new Server(200);
+
+server.connect(() => {
+  // server 2 available resources 
+  device.pub('random-number', (ws) => {
+    let rn = Math.floor(Math.random() * 100);
+    ws.send({id:ws.id, topic:ws.topic, value:rn});
   });
-}
-app();
+
+  device.get('/update-server-data/:id/new-data/:data', (req, res) => {
+    res.json({id:res.id, query:req.query, params:req.params});
+  });
+
+  device.get('/device-state', (req, res) => {
+    res.json({id:res.id, path:res.path, query:req.query, params:req.params, state:'off'});
+  });
+
+  device.post('/machine-control/:id/actuator/:number/action/:state', (req, res) => {
+    res.json({
+  });    
+});
 ```
 
-#### 3. Start your device application.
+#### 2. Start your server 2 application.
 
 ```js
-$ node device.js
+$ node server.js
 ```
 
-### Client Setup
+### Client
 
-#### 1. Create a client project directory and install *m2m*.
-
-```js
-$ npm install m2m
-```
-
-#### 2. Save the code below as *client.js* in your client project directory.
+#### 1. Save any of the code below as *client.js* in your client project directory.
 
 **Method 1**
 
-Create an *alias* object using the client's *accessDevice* method as shown in the code below.
-
 ```js
 const m2m = require('m2m');
 
 let client = new m2m.Client();
 
-client.connect(app);
+const main = async () => {
+  let result = await client.connect();
+  console.log(result);
 
-function app(){
-  // access the remote device using an alias object
-  let device = client.accessDevice(100);
+  let client1 = client.access(100);
+  let client2 = client.access(200);
 
-  // read the current data from 'test-data' topic
-  device.read('test-data', (data) => {
-    console.log('read test-data', data); // node-m2m
-  });
+  let s1 = await client1.read('/machine-1/sensor-1')
+  console.log('s1', s1)
 
-  // update 'test-data' topic using the payload 'node-m2m is awesome'
-  device.write('test-data', 'node-m2m is awesome', (data) => {
-    console.log('write test-data', data);
-  });
+  let s2 = await client1.read('/machine-1/sensor-2')
+  console.log('s2', s2)
 
-  // read the updated 'test-data' topic
-  device.read('test-data', (data) => {
-    console.log('read test-data', data); // node-m2m is awesome
-  });
+  let s3 = await client1.write('/machine-1', {type:'root topic', value:350})
+  console.log('s3', s3)
+
+  let gr = await client2.get('/update-server-data/120/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+  console.log('gr', gr)
+
+  let pr = await client2.post('/machine-control/m120/actuator/25/action/on?name=ed', {id:200, state:'true'})
+  console.log('pr', pr)
 }
+
+main();
 ```
-async/await api
-```js
-const m2m = require('m2m');
-
-let client = new m2m.Client();
-
-async function app(){
-  await client.connect();
-
-  let device = client.accessDevice(100);
-
-  let rd1 = await device.read('test-data'); 
-  console.log('read test-data', rd1); // node-m2m
-
-  let wd = await device.write('test-data', 'node-m2m is awesome');
-  console.log('write test-data', wd);
-
-  let rd2 = await device.read('test-data');
-  console.log('read test-data', rd2); // node-m2m is awesome
-}
-app();
-
-```
-
-
 **Method 2**
 
-Instead of creating an alias, just provide the *device id* through the various available methods from the client object.
-
 ```js
 const m2m = require('m2m');
 
 let client = new m2m.Client();
 
-client.connect(app);
+client.connect()
+.then(console.log) // success
+.then(() => {
 
-function app(){
-  client.read({id:100, topic:'test-data'}, (data) => {
-    console.log('read test-data', data); // node-m2m
-  });
+  client.read(100, '/machine-1/sensor-1')
+  .then(console.log)
 
-  client.write({id:100, topic:'test-data', payload:'node-m2m is awesome'}, (data) => {
-    console.log('write test-data', data);
-  });
+  client.read(100, '/machine-1/sensor-2')
+  .then(console.log)
 
-  client.read({id:100, topic:'test-data'}, (data) => {
-    console.log('read test-data', data); // node-m2m is awesome
-  });
-}
-```
-async/await api
-```js
-const m2m = require('m2m');
+  client1.write(100, '/machine-1', {type:'root topic', value:350})
+  .then(console.log)
 
-let client = new m2m.Client();
+  client.get(200, '/update-server-data/120/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+  .then(console.log)
+  
+  client.post(200, '/machine-control/m120/actuator/25/action/on?name=ed', {id:200, state:'true'})
+  .then(console.log)
 
-async function app(){
-
-  await client.connect(app);
-
-  let rd1 = await client.read({id:100, topic:'test-data'}); 
-  console.log('read test-data', rd1); // node-m2m
-
-  let wd = await client.write({id:100, topic:'test-data', payload:'node-m2m is awesome'});
-  console.log('write test-data', wd);
-
-  let rd2 = await client.read({id:100, topic:'test-data'});
-  console.log('read test-data', rd2); // node-m2m is awesome
-}
-app();
+})
+.catch(console.log)
 ```
 
 #### 3. Start your application.
 ```js
 $ node client.js
 ```
-Similar with remote device setup, you will be prompted to enter your credentials.
-
 You should get a similar output result as shown below.
 ```js
-read test-data node-m2m
-write test-data node-m2m is awesome
-read test-data node-m2m is awesome
+s1 { id: 100, subTopic: '/sensor-1', type: 'sensor-1', value: 126 }
+s2 { id: 100, subTopic: '/sensor-2', type: 'sensor-2', value: 373 }
+s3 {
+  id: 100,
+  rootTopic: '/machine-1',
+  subTopic: '',
+  type: 'root topic',
+  value: 350
+}
+gr {
+  id: 200,
+  query: { name: 'Rv' },
+  params: { id: '120', data: '{"pet":"cat","name":"Captain"}' }
+}
+pr {
+  id: 200,
+  path: '/machine-control/m120/actuator/25/action/on?name=ed',
+  query: { name: 'ed' },
+  params: { id: 'm120', number: '25', state: 'on' },
+  body: { id: 200, state: 'true' }
+}
+
 ```
 
 <br>
@@ -353,63 +415,95 @@ read test-data node-m2m is awesome
 ## Using A Browser Client
 <br>
 
-Using the same remote device from the client-server quicktour, we will use a browser client to access its available resources.
+Using the client-server example, &nbsp;we will use a browser client to access the available resources from the remote servers.
 ## Browser Client Setup
 
-#### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login) to create an access token. 
+#### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login) and create a web access token. 
 
-From the *manage security* section in the main menu under the *user account* tab, generate a web access token.
+From the *manage security* section in the main menu under the *user account* tab, &nbsp;generate a web access token.
 
-#### 2. Install *m2m* in your http server.
-
-Copy the minimized file `node-m2m.min.js` from `node_modules/m2m/dist` directory into your server's public javascript directory.
-
-Include `node-m2m.min.js` on your HTML file `<script src="YOUR_SCRIPT_PATH/node-m2m.min.js"></script>`.
-
-This will create a global **NodeM2M** object.
-
-#### 3. Create a client object instance from the global NodeM2M object.
-
-Access the resources from the remote device directly from the client instance as shown below.
+#### 2. Install *m2m* in your web server.
 
 ```js
-<script> 
+$ npm install m2m
+```
 
+From `node_modules/m2m/dist` directory, &nbsp;copy `node-m2m.min.js` file into your we server's public javascript directory.
+
+<!--
+Include `node-m2m.min.js` on your HTML file `<script src="YOUR_SCRIPT_PATH/node-m2m.min.js"></script>`.
+
+This will create a global **NodeM2M** object. 
+-->
+
+#### 3. Create a client instance from the global NodeM2M object.
+
+<!-- 
 // Protect your access token at all times  
 var tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
  
-var client = new NodeM2M.Client(); 
+//var client = new NodeM2M.Client();
+// new 1/15/23
+//var client = new NodeM2M().createClient(); // ok
+  
+//var m2m = NodeM2M(); // ok
+//var client = m2m.createClient(); // ok
+-->
 
-client.connect(tkn, app);
+```js
+<script src="/javascripts/node-m2m.min.js"></script>
 
-function app(){
-  client.subsribe({id:100, topic:'random-number'}, (data) => {
-    console.log('subsribe random-number', data); // 81, 68, 115 ...
-  });
+<script> 
 
-  client.read({id:100, topic:'test-data'}, (data) => {
-    console.log('read test-data', data); // node-m2m
-  });
+const { createClient } = NodeM2M(); 
 
-  client.write({id:100, topic:'test-data', payload:'node-m2m is awesome'}, (data) => {
-    console.log('write test-data', data);
-  });
+let client = createClient();        
 
-  client.read({id:100, topic:'test-data'}, (data) => {
-    console.log('read test-data', data); // node-m2m is awesome
-  });
-}
+// web access token
+let tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
+
+client.connect({server:'https://www.node-m2m.com', accessTkn:tkn}) 
+.then(console.log) // success
+.then(async () => {   
+
+   client.read(100, '/machine-1/sensor-1')
+  .then(console.log)
+
+  client.read(100, '/machine-1/sensor-2')
+  .then(console.log)
+
+  client1.write(100, '/machine-1', {type:'root topic', value:350})
+  .then(console.log)
+
+  client.get(200, '/update-server-data/120/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+  .then(console.log)
+  
+  client.post(200, '/machine-control/m120/actuator/25/action/on?name=ed', {id:200, state:'true'})
+  .then(console.log)
+
+})
+.catch(console.log)
 
 </script>
 ```
 
-Using your browser dev tools, you should get a similar result as shown below. 
+You should get a similar result as shown below. 
 ```js
-read test-data node-m2m
-write test-data node-m2m is awesome
-read test-data node-m2m is awesome
-subsribe random-number 93
-
+success
+{ id: 100, subTopic: '/sensor-1', type: 'sensor-1', value: 22 }
+{ id: 100, subTopic: '/sensor-2', type: 'sensor-2', value: 29 }
+{
+  id: 200,
+  query: { name: 'Rv' },
+  params: { id: '120', data: '{"pet":"cat","name":"Captain"}' }
+}
+{
+  id: 200,
+  path: '/machine-control/m120/actuator/25/action/on?name=ed',
+  query: { name: 'ed' },
+  params: { id: 'm120', number: '25', state: 'on' },
+  body: { id: 200, state: 'true' }
+}
 ```
 <br>
 
@@ -417,92 +511,5 @@ Check the [m2m browser client web application quick tour](https://github.com/EdA
 
 <br>
 
-## Raspberry Pi Remote Control
-![](assets/quicktour2.svg)
-[](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour2.svg?sanitize=true)
 
-In this quick tour, we will install two push-button switches ( GPIO pin 11 and 13 ) on the remote client, and an led actuator ( GPIO pin 33 ) on the remote device.
-
-The client will attempt to turn *on* and *off* the remote device's actuator and receive a confirmation response of *true* to signify the actuator was indeed turned **on** and *false* when the actuator is turned **off**.
-
-The client will also show an on/off response times providing some insight on the responsiveness of the remote control system.     
-
-### Remote Device Setup
-
-#### 1. Create a device project directory and install *m2m* and *array-gpio*.
-```js
-$ npm install m2m array-gpio
-```
-#### 2. Save the code below as *device.js* in your device project directory.
-
-```js
-const { Device } = require('m2m');
-
-let device = new Device(200);
-
-device.connect(() => {
-  device.setGpio({mode:'output', pin:33});
-});
-```
-
-#### 3. Start your device application.
-```js
-$ node device.js
-```
-
-### Remote Client Setup
-
-#### 1. Create a client project directory and install *m2m* and *array-gpio*.
-```js
-$ npm install m2m array-gpio
-```
-#### 2. Save the code below as *client.js* in your client project directory.
-
-```js
-const { Client } = require('m2m');
-const { setInput } = require('array-gpio');
-
-let sw1 = setInput(11); // as ON switch
-let sw2 = setInput(13); // as OFF switch
-
-// enable pull-down resistor
-sw1.setR(0);
-sw2.setR(0);
-
-let client = new Client();
-
-client.connect(app);
-
-function app(){
-  let t1 = null;
-  let device = client.accessDevice(200);
-
-  sw1.watch(1, (state) => {
-    if(state){
-      t1 = new Date();
-      console.log('turning ON remote actuator');
-      device.output(33).on((data) => {
-        let t2 = new Date();
-        console.log('ON confirmation', data, 'response time', t2 - t1, 'ms');
-      });
-    }
-  });
-
-  sw2.watch(1, (state) => {
-    if(state){
-      t1 = new Date();
-      console.log('turning OFF remote actuator');
-      device.output(33).off((data) => {
-        let t2 = new Date();
-        console.log('OFF confirmation', data, 'response time', t2 - t1, 'ms');
-      });
-    }
-  });
-}
-```
-#### 3. Start your application.
-```js
-$ node client.js
-```
-The led actuator from remote device should toggle *on* and *off* as you press the corresponding ON/OFF switches from the client.
 
