@@ -295,15 +295,15 @@ server.connect(() => {
   });
 
   server.get('/update-server-data/:id/new-data/:data', (req, res) => {
-    res.json({id:res.id, query:req.query, params:req.params});
+    res.send({id:res.id, query:req.query, params:req.params});
   });
 
   server.get('/device-state', (req, res) => {
-    res.json({id:res.id, path:res.path, query:req.query, params:req.params, state:'off'});
+    res.send({id:res.id, path:res.path, query:req.query, params:req.params, state:'off'});
   });
 
   server.post('/machine-control/:id/actuator/:number/action/:state', (req, res) => {
-    res.json({
+    res.send({id:res.id, path:res.path, query:req.query, params:req.params});
   });    
 });
 ```
@@ -367,7 +367,7 @@ client.connect()
   client.read(100, '/machine-1/sensor-2')
   .then(console.log)
 
-  client1.write(100, '/machine-1', {type:'root topic', value:350})
+  client.write(100, '/machine-1', {type:'root topic', value:350})
   .then(console.log)
 
   client.get(200, '/update-server-data/120/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
