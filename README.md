@@ -428,7 +428,7 @@ From the *manage security* section in the main menu under the *user account* tab
 $ npm install m2m
 ```
 
-From `node_modules/m2m/dist` directory, &nbsp;copy `node-m2m.min.js` file into your we server's public javascript directory.
+From `node_modules/m2m/dist` directory, &nbsp;copy `node-m2m.min.js` file into your web server's public javascript directory.
 
 <!--
 Include `node-m2m.min.js` on your HTML file `<script src="YOUR_SCRIPT_PATH/node-m2m.min.js"></script>`.
