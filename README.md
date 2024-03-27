@@ -116,10 +116,10 @@ const m2m = require('m2m');
 let server = new m2m.Server(200);
 
 let main = async () => {
-  let result = await device.connect();
+  let result = await server.connect();
   console.log(result); // success
 
-  device.pub('random-number', (ws) => {
+  server.pub('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
     ws.send({id:ws.id, topic:ws.topic, value:rn});
   });
