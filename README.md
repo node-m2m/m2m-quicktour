@@ -507,7 +507,7 @@ success
 ```
 <br>
 
-Check the [m2m browser client web application quick tour](https://github.com/EdAlegrid/m2m-browser-client-demo) for a complete web application using a browser client.
+<!--Check the [m2m browser client web application quick tour](https://github.com/EdAlegrid/m2m-browser-client-demo) for a complete web application using a browser client.-->
 
 <br>
 
