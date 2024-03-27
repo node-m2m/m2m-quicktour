@@ -289,20 +289,20 @@ let server = new Server(200);
 
 server.connect(() => {
   // server 2 available resources 
-  device.pub('random-number', (ws) => {
+  server.pub('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
     ws.send({id:ws.id, topic:ws.topic, value:rn});
   });
 
-  device.get('/update-server-data/:id/new-data/:data', (req, res) => {
+  server.get('/update-server-data/:id/new-data/:data', (req, res) => {
     res.json({id:res.id, query:req.query, params:req.params});
   });
 
-  device.get('/device-state', (req, res) => {
+  server.get('/device-state', (req, res) => {
     res.json({id:res.id, path:res.path, query:req.query, params:req.params, state:'off'});
   });
 
-  device.post('/machine-control/:id/actuator/:number/action/:state', (req, res) => {
+  server.post('/machine-control/:id/actuator/:number/action/:state', (req, res) => {
     res.json({
   });    
 });
