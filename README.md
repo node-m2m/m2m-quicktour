@@ -343,7 +343,7 @@ const main = async () => {
   let gr = await client2.get('/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
   console.log('gr', gr)
 
-  let pr = await client2.post('/machine-control/150/actuator/5/action/on?name=ed', {id:200, state:'true'})
+  let pr = await client2.post('/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
   console.log('pr', pr)
 }
 
@@ -372,7 +372,7 @@ client.connect()
   client.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
   .then(console.log)
   
-  client.post(200, '/machine-control/150/actuator/5/action/on?name=ed', {id:200, state:'true'})
+  client.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
   .then(console.log)
 
 })
@@ -401,8 +401,8 @@ gr {
 }
 pr {
   id: 200,
-  path: '/machine-control/150/actuator/5/action/on?name=ed',
-  query: { name: 'ed' },
+  path: '/machine-control/150/actuator/5/action/on?name=Ed',
+  query: { name: 'Ed' },
   params: { id: '150', number: '5', state: 'on' },
   body: { id: 200, state: 'true' }
 }
@@ -477,7 +477,7 @@ client.connect({server:'https://www.node-m2m.com', accessTkn:tkn})
   client.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
   .then(console.log)
   
-  client.post(200, '/machine-control/150/actuator/5/action/on?name=ed', {id:200, state:'true'})
+  client.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
   .then(console.log)
 
 })
@@ -498,8 +498,8 @@ success
 }
 {
   id: 200,
-  path: '/machine-control/m120/actuator/25/action/on?name=ed',
-  query: { name: 'ed' },
+  path: '/machine-control/m120/actuator/25/action/on?name=Ed',
+  query: { name: 'Ed' },
   params: { id: '150', number: '5', state: 'on' },
   body: { id: 200, state: 'true' }
 }
