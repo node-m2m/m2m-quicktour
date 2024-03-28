@@ -248,7 +248,6 @@ server.connect(() => {
   });
 
   server.dataSource('/machine-1', (ws) => { // common resources both for client read and write method 
-  //server.read('/machine-1', (ws) => { // Only a client read method can access a read resource   
     let data = { id:ws.id, rootTopic:ws.rootTopic, subTopic:ws.subTopic }
 
     if(ws.topic === '/machine-1/sensor-1'){
@@ -341,10 +340,10 @@ const main = async () => {
   let s3 = await client1.write('/machine-1', {type:'root topic', value:350})
   console.log('s3', s3)
 
-  let gr = await client2.get('/update-server-data/120/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+  let gr = await client2.get('/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
   console.log('gr', gr)
 
-  let pr = await client2.post('/machine-control/m120/actuator/25/action/on?name=ed', {id:200, state:'true'})
+  let pr = await client2.post('/machine-control/150/actuator/5/action/on?name=ed', {id:200, state:'true'})
   console.log('pr', pr)
 }
 
@@ -370,10 +369,10 @@ client.connect()
   client.write(100, '/machine-1', {type:'root topic', value:350})
   .then(console.log)
 
-  client.get(200, '/update-server-data/120/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+  client.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
   .then(console.log)
   
-  client.post(200, '/machine-control/m120/actuator/25/action/on?name=ed', {id:200, state:'true'})
+  client.post(200, '/machine-control/150/actuator/5/action/on?name=ed', {id:200, state:'true'})
   .then(console.log)
 
 })
@@ -398,13 +397,13 @@ s3 {
 gr {
   id: 200,
   query: { name: 'Rv' },
-  params: { id: '120', data: '{"pet":"cat","name":"Captain"}' }
+  params: { id: '320', data: '{"pet":"cat","name":"Captain"}' }
 }
 pr {
   id: 200,
-  path: '/machine-control/m120/actuator/25/action/on?name=ed',
+  path: '/machine-control/150/actuator/5/action/on?name=ed',
   query: { name: 'ed' },
-  params: { id: 'm120', number: '25', state: 'on' },
+  params: { id: '150', number: '5', state: 'on' },
   body: { id: 200, state: 'true' }
 }
 
@@ -475,10 +474,10 @@ client.connect({server:'https://www.node-m2m.com', accessTkn:tkn})
   client.write(100, '/machine-1', {type:'root topic', value:350})
   .then(console.log)
 
-  client.get(200, '/update-server-data/120/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+  client.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
   .then(console.log)
   
-  client.post(200, '/machine-control/m120/actuator/25/action/on?name=ed', {id:200, state:'true'})
+  client.post(200, '/machine-control/150/actuator/5/action/on?name=ed', {id:200, state:'true'})
   .then(console.log)
 
 })
@@ -495,13 +494,13 @@ success
 {
   id: 200,
   query: { name: 'Rv' },
-  params: { id: '120', data: '{"pet":"cat","name":"Captain"}' }
+  params: { id: '320', data: '{"pet":"cat","name":"Captain"}' }
 }
 {
   id: 200,
   path: '/machine-control/m120/actuator/25/action/on?name=ed',
   query: { name: 'ed' },
-  params: { id: 'm120', number: '25', state: 'on' },
+  params: { id: '150', number: '5', state: 'on' },
   body: { id: 200, state: 'true' }
 }
 ```
