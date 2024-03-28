@@ -472,7 +472,7 @@ client.connect({server:'https://www.node-m2m.com', accessTkn:tkn})
   client.read(100, '/machine-1/sensor-2')
   .then(console.log)
 
-  client1.write(100, '/machine-1', {type:'root topic', value:350})
+  client.write(100, '/machine-1', {type:'root topic', value:350})
   .then(console.log)
 
   client.get(200, '/update-server-data/120/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
