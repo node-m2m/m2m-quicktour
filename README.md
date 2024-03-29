@@ -29,11 +29,11 @@
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
 
-Before you start, &nbsp;ensure you have a [node.js](https://nodejs.org/en/) installation in all of your client and server endpoints.
+Before you start, &nbsp;ensure you have a [node.js](https://nodejs.org/en/) installation in all of your remote endpoints.
 
-[Create an account](https://www.node-m2m.com/m2m/account/create) and register your remote server endpoints.
+[Create an account](https://www.node-m2m.com/m2m/account/create) and register your server endpoints.
 
-#### Install *m2m* on your client and server endpoints.
+#### Install *m2m* on your endpoints.
 
 ```js
 $ npm install m2m
@@ -41,7 +41,7 @@ $ npm install m2m
 
 ### Server 1
 
-#### 1. Choose any connect api below and save the code as *server.js* in your project directory.
+#### 1. Choose any connect api below and save the code as *server.js* in your server1 project directory.
 
 Connect using callback
 ```js
@@ -50,7 +50,7 @@ const m2m = require('m2m');
 let server = new m2m.Server(100);
 
 server.connect(() => {
-  // server publish resource 
+  // server resources 
   server.publish('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
     let data = {id:ws.id, topic:ws.topic, value:rn};
@@ -87,7 +87,7 @@ m2m.connect()
 .catch(console.log)
 
 ```
-#### 2. Start your server 1 application.
+#### 2. Start server 1 application.
 
 ```js
 $ node server.js
@@ -108,7 +108,7 @@ $ node server.js -r
 
 ### Server 2
 
-#### 1. Save the code below as *server.js* in your project directory.
+#### 1. Save the code below as *server.js* in your server 2 project directory.
 
 ```js
 const m2m = require('m2m');
@@ -128,7 +128,7 @@ let main = async () => {
 main();
 ```
 
-#### 2. Start your server 2 application.
+#### 2. Start server 2 application.
 
 ```js
 $ node server.js
@@ -136,7 +136,7 @@ $ node server.js
 
 ### Client
 
-#### 1. Save the code below as *client.js* in your project directory.
+#### 1. Save the code below as *client.js* in your client project directory.
 
 **Method 1:** &nbsp; Access each server using the access method
 ```js
@@ -185,17 +185,21 @@ client.connect()
 .then(() => {
 
   // using the default 5 secs polling interval
-  client.subscribe({id:100, topic:'random-number'}, (data) => {
+  client.subscribe(100, 'random-number', (data) => {
+  // or
+  //client.subscribe({id:100, topic:'random-number'}, (data) => {
     console.log('client1 subscribe random-number', data);
   });
   
   // using a polling interval of 10 secs 
-  client.sub({id:200, topic:'random-number', interval:10000}, (data) => {
+  client.sub(200, 'random-number', 10000, (data) => {
+  // or
+  //client.sub({id:200, topic:'random-number', interval:10000}, (data) => {
     console.log('client2 subscribe random-number', data);
   });
 
   setTimeout(() => {
-    client.unsubscribe({id:100, topic:'random-number'});
+    client.unsubscribe(100, 'random-number');
     console.log('client1 unsub');
   }, 30000);
 
@@ -208,7 +212,7 @@ client.connect()
 .catch(console.log)
 ```
 
-#### 3. Start your client application.
+#### 3. Start client application.
 ```js
 $ node client.js
 ```
@@ -269,7 +273,7 @@ server.connect(() => {
 });
 ```
 
-#### 2. Start your server 1 application.
+#### 2. Start server 1 application.
 
 ```js
 $ node server.js
@@ -278,8 +282,6 @@ $ node server.js
 ### Server 2
 
 #### 1. Save the code below as *server.js* in your server 2 project directory.
-
-callback
 
 ```js
 const { Server } = require('m2m');
@@ -307,7 +309,7 @@ server.connect(() => {
 });
 ```
 
-#### 2. Start your server 2 application.
+#### 2. Start server 2 application.
 
 ```js
 $ node server.js
@@ -328,23 +330,23 @@ const main = async () => {
   let result = await client.connect();
   console.log(result);
 
-  let client1 = client.access(100);
-  let client2 = client.access(200);
+  let c1 = client.access(100);
+  let c2 = client.access(200);
 
-  let s1 = await client1.read('/machine-1/sensor-1')
-  console.log('s1', s1)
+  let s1 = await c1.read('/machine-1/sensor-1')
+  console.log(s1)
 
-  let s2 = await client1.read('/machine-1/sensor-2')
-  console.log('s2', s2)
+  let s2 = await c1.read('/machine-1/sensor-2')
+  console.log(s2)
 
-  let s3 = await client1.write('/machine-1', {type:'root topic', value:350})
-  console.log('s3', s3)
+  let s3 = await c1.write('/machine-1', {type:'root topic', value:350})
+  console.log(s3)
 
-  let gr = await client2.get('/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
-  console.log('gr', gr)
+  let gr = await c2.get('/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+  console.log(gr)
 
-  let pr = await client2.post('/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
-  console.log('pr', pr)
+  let pr = await c2.post('/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
+  console.log(pr)
 }
 
 main();
@@ -379,27 +381,27 @@ client.connect()
 .catch(console.log)
 ```
 
-#### 3. Start your application.
+#### 3. Start client application.
 ```js
 $ node client.js
 ```
-You should get a similar output result as shown below.
+You should get an output result as shown below.
 ```js
-s1 { id: 100, subTopic: '/sensor-1', type: 'sensor-1', value: 126 }
-s2 { id: 100, subTopic: '/sensor-2', type: 'sensor-2', value: 373 }
-s3 {
+{ id: 100, subTopic: '/sensor-1', type: 'sensor-1', value: 126 }
+{ id: 100, subTopic: '/sensor-2', type: 'sensor-2', value: 373 }
+{
   id: 100,
   rootTopic: '/machine-1',
   subTopic: '',
   type: 'root topic',
   value: 350
 }
-gr {
+{
   id: 200,
   query: { name: 'Rv' },
   params: { id: '320', data: '{"pet":"cat","name":"Captain"}' }
 }
-pr {
+{
   id: 200,
   path: '/machine-control/150/actuator/5/action/on?name=Ed',
   query: { name: 'Ed' },
@@ -491,6 +493,13 @@ You should get a similar result as shown below.
 success
 { id: 100, subTopic: '/sensor-1', type: 'sensor-1', value: 22 }
 { id: 100, subTopic: '/sensor-2', type: 'sensor-2', value: 29 }
+{
+  id: 100,
+  rootTopic: '/machine-1',
+  subTopic: '',
+  type: 'root topic',
+  value: 350
+}
 {
   id: 200,
   query: { name: 'Rv' },
