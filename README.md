@@ -9,7 +9,7 @@
    8. [Edge C/C++ Connector Application](https://github.com/Node-M2M/CppEdgeConnector)
    9. [Edge C# Connector Application](https://github.com/Node-M2M/CsharpEdgeConnector)
    10. [M2M Server-To-Server Communication](https://github.com/Node-M2M/m2m-server-to-server-communication)
-   11. [Edge Raspberry Pi GPIO Access](https://github.com/Node-M2M/edge-rpio-gpio-access)
+   11. [Edge Raspberry Pi GPIO Access](https://github.com/Node-M2M/edge-rpi-gpio-access)
       
    <!--7. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
    7. [M2M Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
