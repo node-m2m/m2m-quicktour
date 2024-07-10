@@ -248,13 +248,16 @@ const { Server } = require('m2m');
 let server = new Server(100);
 
 server.connect(() => {
-  // server 1 available resources 
+  // server 1 available resources
+
+  // publish resource
   server.publish('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
     ws.send({id:ws.id, topic:ws.topic, value:rn});
   });
 
-  server.dataSource('/machine-1', (ws) => { // common resources both for client read and write method 
+  // common read/write resource 
+  server.dataSource('/machine-1', (ws) => {
     let data = { id:ws.id, rootTopic:ws.rootTopic, subTopic:ws.subTopic }
 
     if(ws.topic === '/machine-1/sensor-1'){
@@ -292,20 +295,25 @@ const { Server } = require('m2m');
 let server = new Server(200);
 
 server.connect(() => {
-  // server 2 available resources 
+  // server 2 available resources
+
+  // publish resource
   server.pub('random-number', (ws) => {
     let rn = Math.floor(Math.random() * 100);
     ws.send({id:ws.id, topic:ws.topic, value:rn});
   });
 
+  // http get resource 
   server.get('/update-server-data/:id/new-data/:data', (req, res) => {
     res.send({id:res.id, query:req.query, params:req.params});
   });
 
+  // http get resource
   server.get('/device-state', (req, res) => {
     res.send({id:res.id, path:res.path, query:req.query, params:req.params, state:'off'});
   });
 
+  // http post resource 
   server.post('/machine-control/:id/actuator/:number/action/:state', (req, res) => {
     res.send({id:res.id, path:res.path, query:req.query, params:req.params});
   });    
