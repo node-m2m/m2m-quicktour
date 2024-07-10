@@ -143,9 +143,9 @@ $ node server.js
 
 **Method 1:** &nbsp; Access each server using the access method
 ```js
-const { Client } = require('m2m');
+const m2m = require('m2m');
 
-let client = new Client();
+let client = new m2m.Client();
 
 client.connect()
 .then(console.log) // success
