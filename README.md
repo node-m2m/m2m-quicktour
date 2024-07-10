@@ -44,7 +44,7 @@ $ npm install m2m
 
 ### Server 1
 
-#### 1. Choose any connect api below and save the code as *server.js* in your server1 project directory.
+#### 1. Choose any connect api below and save the code as *server.js* in your server 1 project directory.
 
 Connect using callback
 ```js
