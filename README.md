@@ -234,7 +234,7 @@ client2 unsub true
 <br>
 
 
-## Client-Server Pattern
+## M2M Client-Server Pattern
 ![](assets/m2m-pub-sub.png)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
