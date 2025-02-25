@@ -1,6 +1,6 @@
 # Quick Tour
-   1. [M2M Publish-Subscribe Pattern](#publish-subscribe-pattern)
-   2. [M2M Client-Server Pattern](#client-server-pattern)
+   1. [M2M Publish-Subscribe Pattern](#m2m-publish-subscribe-pattern)
+   2. [M2M Client-Server Pattern](#m2m-client-server-pattern)
    3. [M2M Browser Client](#using-a-browser-client)
    4. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
    5. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
