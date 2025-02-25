@@ -27,7 +27,7 @@
 
 <br>
 
-## Publish-Subscribe Pattern
+## M2M Publish-Subscribe Pattern
 ![](assets/m2m-pub-sub.png)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
