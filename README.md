@@ -248,7 +248,6 @@ const { Server } = require('m2m');
 let server = new Server(100);
 
 server.connect(() => {
-  // server 1 available resources
 
   // publish resource
   server.publish('random-number', (ws) => {
@@ -261,14 +260,12 @@ server.connect(() => {
     let data = { id:ws.id, rootTopic:ws.rootTopic, subTopic:ws.subTopic }
 
     if(ws.topic === '/machine-1/sensor-1'){
-      let rn = Math.floor(Math.random() * 200);
       data.type = 'sensor-1';
-      data.value = rn; 
+      data.value = Math.floor(Math.random() * 200);
     }
     else if(ws.topic === '/machine-1/sensor-2'){
-      let rn = Math.floor(Math.random() * 400);
       data.type = 'sensor-2';
-      data.value = rn; 
+      data.value = Math.floor(Math.random() * 400);
     }
     else if(ws.topic === '/machine-1' && ws.payload){
       data.type = ws.payload.type;
@@ -295,7 +292,6 @@ const { Server } = require('m2m');
 let server = new Server(200);
 
 server.connect(() => {
-  // server 2 available resources
 
   // publish resource
   server.pub('random-number', (ws) => {
@@ -339,7 +335,7 @@ let client = new m2m.Client();
 
 const main = async () => {
   let result = await client.connect();
-  console.log(result);
+  console.log(result); // success
 
   let c1 = client.access(100);
   let c2 = client.access(200);
@@ -396,7 +392,7 @@ client.connect()
 ```js
 $ node client.js
 ```
-You should get an output result as shown below.
+You should get a near similar output result as shown below.
 ```js
 { id: 100, subTopic: '/sensor-1', type: 'sensor-1', value: 126 }
 { id: 100, subTopic: '/sensor-2', type: 'sensor-2', value: 373 }
@@ -424,7 +420,7 @@ You should get an output result as shown below.
 
 <br>
 
-## Using A Browser Client
+## Using A Browser Client for M2M Communication
 <br>
 
 Using the client-server example, &nbsp;we will use a browser client to access the available resources from the remote servers.
@@ -499,7 +495,7 @@ client.connect({server:'https://www.node-m2m.com', accessTkn:tkn})
 </script>
 ```
 
-You should get a similar result as shown below. 
+You should get a near similar output result as shown below. 
 ```js
 success
 { id: 100, subTopic: '/sensor-1', type: 'sensor-1', value: 22 }
