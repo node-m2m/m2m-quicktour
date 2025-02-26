@@ -83,12 +83,11 @@ const m2m = require('m2m');
 let server = new m2m.Server(100);
 
 m2m.connect()
+.catch(console.log)
 .then(console.log) // success
 .then(() => {
   // add server resources here
 })  
-.catch(console.log)
-
 ```
 #### 2. Start server 1 application.
 
@@ -184,6 +183,7 @@ const { Client } = require('m2m');
 let client = new Client();
 
 client.connect()
+.catch(console.log)
 .then(console.log) // success
 .then(() => {
 
@@ -212,7 +212,6 @@ client.connect()
     console.log('client2 unsub', result); // true if successful
   }, 60000);
 })
-.catch(console.log)
 ```
 
 #### 3. Start client application.
@@ -474,7 +473,8 @@ let client = createClient();
 // web access token
 let tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
 
-client.connect({server:'https://www.node-m2m.com', accessTkn:tkn}) 
+client.connect({server:'https://www.node-m2m.com', accessTkn:tkn})
+.catch(console.log)
 .then(console.log) // success
 .then(async () => {   
 
@@ -492,9 +492,7 @@ client.connect({server:'https://www.node-m2m.com', accessTkn:tkn})
   
   client.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
   .then(console.log)
-
 })
-.catch(console.log)
 
 </script>
 ```
