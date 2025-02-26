@@ -1,7 +1,7 @@
 # Quick Tour
    1. [M2M Publish-Subscribe Pattern](#m2m-publish-subscribe-pattern)
    2. [M2M Client-Server Pattern](#m2m-client-server-pattern)
-   3. [M2M Browser Client](#using-a-browser-client-for-m2m-communication)
+   3. [M2M Browser Client](#m2m-browser-client)
    4. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
    5. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
    6. [Create an M2M Bridge Gateway](https://github.com/Node-M2M/m2m-bridge-gateway)
@@ -420,7 +420,7 @@ You should get a near similar output result as shown below.
 
 <br>
 
-## Using A Browser Client for M2M Communication
+## M2M Browser Client
 <br>
 
 Using the client-server example, &nbsp;we will use a browser client to access the available resources from the remote servers.
