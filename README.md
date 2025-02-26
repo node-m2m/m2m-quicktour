@@ -42,7 +42,7 @@ Before you start, &nbsp;ensure you have a [node.js](https://nodejs.org/en/) inst
 $ npm install m2m
 ```
 
-### Server 1
+### Server 1 Setup
 
 #### 1. Choose any connect api below and save the code as *server.js* in your server 1 project directory.
 
@@ -108,7 +108,7 @@ At anytime, &nbsp;if you're having difficulty or issues restarting your applicat
 $ node server.js -r
 ```
 
-### Server 2
+### Server 2 Setup
 
 #### 1. Save the code below as *server.js* in your server 2 project directory.
 
@@ -136,7 +136,7 @@ main();
 $ node server.js
 ```
 
-### Client
+### Client Setup
 
 #### 1. Save the code below as *client.js* in your client project directory.
 
@@ -237,7 +237,7 @@ client2 unsub true
 ![](assets/m2m-system-example.png)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
-### Server 1
+### Server 1 Setup
 
 #### 1. Save the code below as *server.js* in your server 1 project directory.
 
@@ -281,7 +281,7 @@ server.connect(() => {
 $ node server.js
 ```
 
-### Server 2
+### Server 2 Setup
 
 #### 1. Save the code below as *server.js* in your server 2 project directory.
 
@@ -321,7 +321,7 @@ server.connect(() => {
 $ node server.js
 ```
 
-### Client
+### Client Setup
 
 #### 1. Save any of the code below as *client.js* in your client project directory.
 
