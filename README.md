@@ -148,6 +148,7 @@ const m2m = require('m2m');
 let client = new m2m.Client();
 
 client.connect()
+.catch(console.log)
 .then(console.log) // success
 .then(() => {
   let client1 = client.access(100);
@@ -174,7 +175,6 @@ client.connect()
     console.log('client2 unsub', result); // true if successful
   }, 60000);
 })
-.catch(console.log)
 ```
 
 **Method 2:** &nbsp; Access each server directly from the client object by providing the server id  
@@ -366,26 +366,30 @@ const m2m = require('m2m');
 let client = new m2m.Client();
 
 client.connect()
+.catch(console.log)
 .then(console.log) // success
 .then(() => {
 
   client.read(100, '/machine-1/sensor-1')
+  .catch(console.log)
   .then(console.log)
 
   client.read(100, '/machine-1/sensor-2')
+  .catch(console.log)
   .then(console.log)
 
   client.write(100, '/machine-1', {type:'root topic', value:350})
+  .catch(console.log)
   .then(console.log)
 
   client.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+  .catch(console.log)
   .then(console.log)
   
   client.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
+  .catch(console.log)
   .then(console.log)
-
 })
-.catch(console.log)
 ```
 
 #### 3. Start client application.
