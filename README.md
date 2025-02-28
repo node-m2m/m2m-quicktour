@@ -5,7 +5,7 @@
    4. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
    5. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
    6. [Create an M2M Bridge Gateway](https://github.com/Node-M2M/m2m-bridge-gateway)
-   7. [Create a Server Load Balancer for Edge Computing](https://github.com/Node-M2M/edge-load-balancing)
+   7. [Create a Load Balancer Server for Edge Computing](https://github.com/Node-M2M/edge-load-balancing)
    8. [Edge C/C++ Connector Application](https://github.com/Node-M2M/CppEdgeConnector)
    9. [Edge C# Connector Application](https://github.com/Node-M2M/CsharpEdgeConnector)
    10. [M2M Server-To-Server Communication](https://github.com/Node-M2M/m2m-server-to-server-communication)
