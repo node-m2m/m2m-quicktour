@@ -6,10 +6,10 @@
    5. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
    6. [Create an M2M Bridge Gateway](https://github.com/Node-M2M/m2m-bridge-gateway)
    7. [Create a Load Balancer Server for Edge Computing](https://github.com/Node-M2M/edge-load-balancing)
-   8. [Edge C/C++ Connector Application](https://github.com/Node-M2M/CppEdgeConnector)
-   9. [Edge C# Connector Application](https://github.com/Node-M2M/CsharpEdgeConnector)
-   10. [M2M Server-To-Server Communication](https://github.com/Node-M2M/m2m-server-to-server-communication)
-   11. [Edge Raspberry Pi GPIO Access](https://github.com/Node-M2M/edge-rpi-gpio-access)
+   8. [M2M Server-To-Server Communication](https://github.com/Node-M2M/m2m-server-to-server-communication)
+   9. [Edge Raspberry Pi GPIO Access](https://github.com/Node-M2M/edge-rpi-gpio-access)
+   <!--8. [Edge C/C++ Connector Application](https://github.com/Node-M2M/CppEdgeConnector)
+   9. [Edge C# Connector Application](https://github.com/Node-M2M/CsharpEdgeConnector)-->
       
    <!--7. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
    7. [M2M Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
