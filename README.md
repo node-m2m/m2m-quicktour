@@ -38,7 +38,7 @@ Before you start, &nbsp;ensure you have a [node.js](https://nodejs.org/en/) inst
 
 ### Server 1 Setup
 
-#### Create server 1 project directory and install *m2m* on your endpoints.
+#### Create server 1 project directory and install *m2m*.
 
 ```js
 $ npm install m2m
@@ -107,7 +107,7 @@ At anytime, &nbsp;if you're having difficulty or issues restarting your applicat
 $ node server.js -r
 ```
 ### Server 2 Setup
-#### Create server 2 project directory and install *m2m* on your endpoints.
+#### Create server 2 project directory and install *m2m*.
 ```js
 $ npm install m2m
 ```
