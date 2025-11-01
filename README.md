@@ -36,14 +36,13 @@ Before you start, &nbsp;ensure you have a [node.js](https://nodejs.org/en/) inst
 
 [Create an account](https://www.node-m2m.com/m2m/account/create) and register your server endpoints.
 
-#### Install *m2m* on your endpoints.
+### Server 1 Setup
+
+#### Create server 1 project directory and install *m2m* on your endpoints.
 
 ```js
 $ npm install m2m
 ```
-
-### Server 1 Setup
-
 #### 1. Choose any connect api below and save the code as *server.js* in your server 1 project directory.
 
 Connect using callback
@@ -107,9 +106,11 @@ At anytime, &nbsp;if you're having difficulty or issues restarting your applicat
 ```js
 $ node server.js -r
 ```
-
 ### Server 2 Setup
-
+#### Create server 2 project directory and install *m2m* on your endpoints.
+```js
+$ npm install m2m
+```
 #### 1. Save the code below as *server.js* in your server 2 project directory.
 
 ```js
