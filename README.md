@@ -27,7 +27,7 @@
 
 <br>
 
-## M2M Publish-Subscribe Pattern
+## Cloud Publish-Subscribe Pattern
 ![](assets/m2m-system-example.png)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
@@ -234,7 +234,7 @@ client2 unsub true
 <br>
 
 
-## M2M Client-Server Pattern
+## Cloud Client-Server Pattern
 ![](assets/m2m-system-example.png)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
@@ -424,7 +424,7 @@ You should get a near similar output result as shown below.
 
 <br>
 
-## M2M Browser Client
+## Cloud Browser Client
 <br>
 
 Using the client-server example, &nbsp;we will use a browser client to access the available resources from the remote servers.
