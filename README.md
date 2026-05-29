@@ -4,7 +4,7 @@
    3. [Cloud Browser Client](#m2m-browser-client)
    4. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
    5. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
-   6. [Create an Cloud Bridge Gateway](https://github.com/Node-M2M/m2m-bridge-gateway)
+   6. [Create a Cloud Bridge Gateway](https://github.com/Node-M2M/m2m-bridge-gateway)
    7. [Create a Load Balancer Server for Edge Computing](https://github.com/Node-M2M/edge-load-balancing)
    8. [Cloud Server-To-Server Communication](https://github.com/Node-M2M/m2m-server-to-server-communication)
    9. [Edge Raspberry Pi GPIO Access](https://github.com/Node-M2M/edge-rpi-gpio-access)
