@@ -1,7 +1,7 @@
 # Quick Tour
-   1. [Cloud Publish-Subscribe Pattern](#m2m-publish-subscribe-pattern)
-   2. [Cloud Client-Server Pattern](#m2m-client-server-pattern)
-   3. [Cloud Browser Client](#m2m-browser-client)
+   1. [Cloud Publish-Subscribe Pattern](#cloud-publish-subscribe-pattern)
+   2. [Cloud Client-Server Pattern](#cloud-client-server-pattern)
+   3. [Cloud Browser Client](#cloud-browser-client)
    4. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
    5. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
    6. [Create a Cloud Bridge Gateway](https://github.com/Node-M2M/m2m-bridge-gateway)
