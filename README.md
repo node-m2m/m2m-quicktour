@@ -49,7 +49,9 @@ Connect using callback
 ```js
 const m2m = require('m2m');
 
-let server = new m2m.Server(100);
+let server = new m2m.Server(100); 
+// or explicitly
+//let server = new m2m.Cloud({type:'server', port:100});
 
 server.connect(() => {
   // server resources 
@@ -116,7 +118,9 @@ $ npm install m2m
 ```js
 const m2m = require('m2m');
 
-let server = new m2m.Server(200);
+//let server = new m2m.Server(200);
+// or explicitly
+let server = new m2m.Cloud({type:'server', port:200});
 
 let main = async () => {
   let result = await server.connect();
@@ -146,6 +150,8 @@ $ node server.js
 const m2m = require('m2m');
 
 let client = new m2m.Client();
+// or
+//let client = new Cloud({type:'client', name:'myCloud-client'});
 
 client.connect()
 .catch(console.log)
@@ -179,9 +185,11 @@ client.connect()
 
 **Method 2:** &nbsp; Access each server directly from the client object by providing the server id  
 ```js
-const { Client } = require('m2m');
+const { Client, Cloud } = require('m2m');
 
-let client = new Client();
+//let client = new Client();
+// or explicitly
+let client = new Cloud({type:'client', name:'myCloud-client'});
 
 client.connect()
 .catch(console.log)
@@ -245,7 +253,7 @@ client2 unsub true
 ```js
 const { Server } = require('m2m');
 
-let server = new Server(100);
+let server = new m2m.Cloud({type:'server', port:100});
 
 server.connect(() => {
 
@@ -332,6 +340,8 @@ $ node server.js
 const m2m = require('m2m');
 
 let client = new m2m.Client();
+// or
+//let client = new m2m.Cloud({type:'client', name:'cloud-client-1'});
 
 const main = async () => {
   let result = await client.connect();
@@ -363,7 +373,9 @@ main();
 ```js
 const m2m = require('m2m');
 
-let client = new m2m.Client();
+//let client = new m2m.Client();
+// or
+let client = new m2m.Cloud({type:'client', name:'cloud-client-1'});
 
 client.connect()
 .catch(console.log)
@@ -467,9 +479,11 @@ var tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
 
 <script> 
 
-const { createClient } = NodeM2M(); 
+const { createClient, Cloud } = NodeM2M(); 
 
-let client = createClient();        
+let client = createClient();
+// or
+//let client = new Cloud({type:'client', name:'cloud-browser-client', location:'Austin, Texas'}) 
 
 // web access token
 let tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
