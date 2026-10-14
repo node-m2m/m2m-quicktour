@@ -14,20 +14,20 @@
 
 <br>
 
-## Cloud Computing
+# Cloud Computing
 ![](assets/m2m-system-example.png)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
 
 [Create an account](https://www.node-m2m.com/m2m/account/create) and register your server endpoints.
 
-### Server 1 Setup
+## Server 1 Setup
 
 #### Create server 1 project directory and install *m2m*.
 
 ```js
 $ npm install m2m
 ```
-#### 1. Choose any connect api below and save the code as *server.js* in your server 1 project directory.
+#### 1. Save the code below as *server.js* in your project directory.
 
 Connect using callback
 ```js
@@ -84,7 +84,7 @@ At anytime, &nbsp;if you're having difficulty or issues restarting your applicat
 ```js
 $ node server.js -r
 ```
-### Server 2 Setup
+## Server 2 Setup
 #### Create server 2 project directory and install *m2m*.
 ```js
 $ npm install m2m
@@ -129,7 +129,7 @@ main()
 $ node server.js
 ```
 
-### Client Setup
+## Client Setup
 
 #### 1. Save the code below as *client.js* in your client project directory.
 
