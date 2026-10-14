@@ -1,25 +1,12 @@
 # Quick Tour
-   1. [Cloud Publish-Subscribe Pattern](#cloud-publish-subscribe-pattern)
-   2. [Cloud Client-Server Pattern](#cloud-client-server-pattern)
-   3. [Cloud Browser Client](#cloud-browser-client)
-   4. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
-   5. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
-   6. [Create a Cloud Bridge Gateway](https://github.com/Node-M2M/m2m-bridge-gateway)
-   7. [Create a Load Balancer Server for Edge Computing](https://github.com/Node-M2M/edge-load-balancing)
-   8. [Cloud Server-To-Server Communication](https://github.com/Node-M2M/m2m-server-to-server-communication)
-   9. [Edge Raspberry Pi GPIO Access](https://github.com/Node-M2M/edge-rpi-gpio-access)
-   <!--8. [Edge C/C++ Connector Application](https://github.com/Node-M2M/CppEdgeConnector)
-   9. [Edge C# Connector Application](https://github.com/Node-M2M/CsharpEdgeConnector)-->
-      
-   <!--7. [Monitor Data from Remote C/C++ Application through IPC (inter-process communication)](https://github.com/EdAlegrid/cpp-ipc-application-demo)
-   7. [Cloud Client-Server Using HTTP Api](https://github.com/EdAlegrid/http-api)
-   8. [Web application demo using the fetch api](https://github.com/EdAlegrid/m2m-web-application-demo)
-   9. [Web application demo using only an m2m browser client](https://github.com/EdAlegrid/m2m-browser-client-demo)
-   10. [Monitor Data from Remote C# Application through IPC (inter-process communication)](https://github.com/EdAlegrid/csharp-ipc-application-demo)
-   11. [File Integrity Monitoring](https://github.com/EdAlegrid/file-integrity-monitoring)
-   12. [Create A Simple Gateway Load Balancer](https://github.com/EdAlegrid/gateway-load-balancer)-->
-
-<br>
+   1. [Cloud Computing](#cloud-computing)
+   2. [Cloud Browser Client](#cloud-browser-client)
+   3. [Edge Computing Using Local Area Networking](https://github.com/Node-M2M/m2m-edge-example)
+   4. [Create an Edge Gateway](https://github.com/Node-M2M/edge-gateway)
+   5. [Create a Cloud Bridge Gateway](https://github.com/Node-M2M/m2m-bridge-gateway)
+   6. [Create a Load Balancer Server for Edge Computing](https://github.com/Node-M2M/edge-load-balancing)
+   7. [Cloud Server-To-Server Communication](https://github.com/Node-M2M/m2m-server-to-server-communication)
+   8. [Edge Raspberry Pi GPIO Access](https://github.com/Node-M2M/edge-rpi-gpio-access)
 
 <!--- [API Reference](https://github.com/Node-M2M/M2M-API) --->
 
@@ -27,12 +14,9 @@
 
 <br>
 
-## Cloud Publish-Subscribe Pattern
+## Cloud Computing
 ![](assets/m2m-system-example.png)
 [](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
-
-
-Before you start, &nbsp;ensure you have a [node.js](https://nodejs.org/en/) installation in all of your remote endpoints.
 
 [Create an account](https://www.node-m2m.com/m2m/account/create) and register your server endpoints.
 
@@ -47,48 +31,40 @@ $ npm install m2m
 
 Connect using callback
 ```js
-const m2m = require('m2m');
+const m2m = require('m2m')
 
-let server = new m2m.Server(100); 
-// or explicitly
-//let server = new m2m.Cloud({type:'server', port:100});
+// Create a cloud server (cs) with a server id of 100
+let cs = new m2m.Cloud({type:'server', id:100}) 
 
-server.connect(() => {
-  // server resources 
-  server.publish('random-number', (ws) => {
-    let rn = Math.floor(Math.random() * 100);
-    let data = {id:ws.id, topic:ws.topic, value:rn};
-    ws.send(data);
-  });
-});
-```
-Connect using async/await
+let serverMsg = 'node-m2m is amazing'
 
-```js
-const m2m = require('m2m');
-
-let server = new m2m.Server(100);
-
-let main = async () => {
-  await server.connect();
-  // add server resources here
+// Generate a random number
+function genRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-main();
-```
-Connect using promise
+m2m.connect((result) => {
+	console.log(result) // success
 
-```js
-const m2m = require('m2m');
+	// Create publish resource with a topic of 'random-number' 
+	cs.publish('random-number', (ws) => {
+		let rn = genRandomInt(15, 100)
+		ws.send({id:ws.id, topic:ws.topic, value:rn}) 
+	})
 
-let server = new m2m.Server(100);
+	// Create read resource using 'read-server-msg' topic
+	cs.read('read-server-msg', (ws) => {
+		ws.send({id:ws.id, topic:ws.topic, message:serverMsg}) 
+	})
 
-m2m.connect()
-.catch(console.log)
-.then(console.log) // success
-.then(() => {
-  // add server resources here
-})  
+	// Create write resource using 'write-server-msg' topic
+	cs.write('write-server-msg', (ws) => {
+		if(ws.payload){
+			serverMsg = ws.payload.message
+		}	
+		ws.send({id:ws.id, topic:ws.topic, message:serverMsg}) 
+	})
+})
 ```
 #### 2. Start server 1 application.
 
@@ -114,25 +90,37 @@ $ node server.js -r
 $ npm install m2m
 ```
 #### 1. Save the code below as *server.js* in your server 2 project directory.
-
+Connect using async/await
 ```js
-const m2m = require('m2m');
+const m2m = require('m2m')
 
-//let server = new m2m.Server(200);
-// or explicitly
-let server = new m2m.Cloud({type:'server', port:200});
+let cs = m2m.Cloud({type:'server', port:200}) 
 
-let main = async () => {
-  let result = await server.connect();
-  console.log(result); // success
-
-  server.pub('random-number', (ws) => {
-    let rn = Math.floor(Math.random() * 100);
-    ws.send({id:ws.id, topic:ws.topic, value:rn});
-  });
+function genRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-main();
+let main = async () => {
+	let result = await cs.connect()
+	console.log(result) // success
+
+	cs.publish('random-number', (ws) => {
+		let rn = genRandomInt(10, 50)
+		ws.send({id:ws.id, topic:ws.topic, value:rn})
+	})
+
+	// http get resource with '/update-server-data/:id/new-data/:data' path
+	cs.get('/update-server-data/:id/new-data/:data', (req, res) => {
+		res.send({id:res.id, query:req.query, params:req.params})
+	})
+
+	// http post resource with '/machine-control/:id/actuator/:number/action/:state' path
+	cs.post('/machine-control/:id/actuator/:number/action/:state', (req, res) => {
+		res.send({id:res.id, path:res.path, query:req.query, params:req.params})
+	})    
+}
+
+main()
 ```
 
 #### 2. Start server 2 application.
@@ -146,80 +134,125 @@ $ node server.js
 #### 1. Save the code below as *client.js* in your client project directory.
 
 **Method 1:** &nbsp; Access each server using the access method
+
+Connect using promise
 ```js
-const m2m = require('m2m');
+const m2m = require('m2m')
 
-let client = new m2m.Client();
-// or
-//let client = new Cloud({type:'client', name:'myCloud-client'});
+let cc = m2m.Cloud({type:'client', name:'cloud-client-1'})
 
-client.connect()
-.catch(console.log)
+m2m.connect()
 .then(console.log) // success
-.then(() => {
-  let client1 = client.access(100);
-  let client2 = client.access(200);
+.catch(console.log)
+.then(async () => {
+	let c1 = cc.access(100)
+	let c2 = cc.access(200)
 
-  // using the default 5 secs polling interval
-  client1.subscribe('random-number', (data) => {
-    console.log('client1 subscribe random-number', data);
-  });
-  
-  // using a polling interval of 10 secs 
-  client2.sub('random-number', 10000, (data) => {
-    console.log('client2 subscribe random-number', data);
-  });
+	try{
+		let r1 = await c1.read('read-server-msg')
+		console.log('result1', r1)
 
-  setTimeout(() => {
-    client1.unsubscribe('random-number');
-    console.log('client1 unsub');
-  }, 30000);
+		let r2 = await c1.write('write-server-msg', {message:'node-m2m is awesome'})
+		console.log('result2', r2)
 
-  setTimeout(async () => {
-    // confirm unsubscribe if successful
-    let result = await client2.unsub('random-number');
-    console.log('client2 unsub', result); // true if successful
-  }, 60000);
+		let r3 = await c1.read('read-server-msg')
+		console.log('result3', r3)
+
+		let gr = await c2.get('/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+		console.log('get result', gr)
+
+		let pr = await c2.post('/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
+		console.log('post result', pr)
+	}
+	catch(e){
+		console.log('cc error:', e.message)
+	}
+
+	// use the default 5 secs poll interval 
+	c1.subscribe('random-number', (data) => {
+		console.log('client1 subscribe random-number', data)
+	})
+
+	// use the shorthand sub method instead of subscribe and set the poll interval to 13 secs 
+	c2.sub({topic:'random-number', pollInterval:13000}, (data) => {
+		console.log('client2 subscribe random-number', data)
+	})
+
+	setTimeout(async () => {
+		// using an asynchronous callback for the result
+		c1.unsubscribe('random-number', (result) => { 
+			console.log('client1 unsub', result) // true if successful
+		})
+	}, 20000)
+
+	setTimeout(async () => {
+		try{
+			// use the shorthand unsub method instead of unsubscribe 
+			let result = await c2.unsub('random-number')
+			console.log('client2 unsub', result) // true if successful
+		}
+		catch(e){
+			console.log('client2 error:', e.message)
+		}
+	}, 40000)
 })
 ```
 
 **Method 2:** &nbsp; Access each server directly from the client object by providing the server id  
 ```js
-const { Client, Cloud } = require('m2m');
+const m2m = require('m2m')
 
-//let client = new Client();
-// or explicitly
-let client = new Cloud({type:'client', name:'myCloud-client'});
+let cc = m2m.Cloud({type:'client', name:'cloud-client-2'})
 
-client.connect()
-.catch(console.log)
+cc.connect()
 .then(console.log) // success
-.then(() => {
+.catch(console.log)
+.then(async () => {
+	try{
+		let r1 = await cc.read(100, 'read-server-msg')
+		console.log('result1', r1)
 
-  // using the default 5 secs polling interval
-  client.subscribe(100, 'random-number', (data) => {
-  // or
-  //client.subscribe({id:100, topic:'random-number'}, (data) => {
-    console.log('client1 subscribe random-number', data);
-  });
-  
-  // using a polling interval of 10 secs 
-  client.sub(200, 'random-number', 10000, (data) => {
-  // or
-  //client.sub({id:200, topic:'random-number', interval:10000}, (data) => {
-    console.log('client2 subscribe random-number', data);
-  });
+		let r2 = await cc.write(100, 'write-server-msg', {message:'node-m2m is awesome'})
+		console.log('result2', r2)
 
-  setTimeout(() => {
-    client.unsubscribe(100, 'random-number');
-    console.log('client1 unsub');
-  }, 30000);
+		let r3 = await cc.read(100, 'read-server-msg')
+		console.log('result3', r3)
 
-  setTimeout(async () => {
-    // confirm unsubscribe if successful
-    let result = await client.unsub({id:200, topic:'random-number'});
-    console.log('client2 unsub', result); // true if successful
-  }, 60000);
+		let gr = await cc.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+		console.log('get result', gr)
+
+		let pr = await cc.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
+		console.log('post result', pr)
+	}
+	catch(e){
+		console.log('cloud client error:', e.message)
+	}
+	
+	// set a poll interval of 10 secs
+	cc.sub(100, 'random-number', 10000, (data) => {
+		console.log('client1 subscribe random-number', data)
+	})
+
+	// use the default 5 secs poll interval
+	cc.sub(200, 'random-number', (data) => {	
+		console.log('client2 subscribe random-number', data)
+	})
+
+	setTimeout(async () => {
+		try{
+			let result = await cc.unsub(100, 'random-number')
+			console.log('client1 unsub', result)
+		}
+		catch(e){
+			console.log('client1 error:', e.message)
+		}
+	}, 40000)
+
+	setTimeout(async () => {
+		cc.unsub(200, 'random-number', (result) => { 
+			console.log('client2 unsub', result) // true if successful
+		})
+	}, 20000)
 })
 ```
 
@@ -229,218 +262,41 @@ $ node client.js
 ```
 You should get a similar output result as shown below.
 ```js
-client1 subscribe random-number { id: 100, topic: 'random-number', value: 18 }
-client1 subscribe random-number { id: 100, topic: 'random-number', value: 8 }
-client2 subscribe random-number { id: 200, topic: 'random-number', value: 98 }
-client1 subscribe random-number { id: 100, topic: 'random-number', value: 96 }
-client1 unsub
-client2 subscribe random-number { id: 200, topic: 'random-number', value: 34 }
-client1 subscribe random-number { id: 100, topic: 'random-number', value: 15 }
-client2 unsub true
-```
-
-<br>
-
-
-## Cloud Client-Server Pattern
-![](assets/m2m-system-example.png)
-[](https://raw.githubusercontent.com/EdoLabs/src2/master/quicktour.svg?sanitize=true)
-
-### Server 1 Setup
-
-#### 1. Save the code below as *server.js* in your server 1 project directory.
-
-```js
-const { Server } = require('m2m');
-
-let server = new m2m.Cloud({type:'server', port:100});
-
-server.connect(() => {
-
-  // publish resource
-  server.publish('random-number', (ws) => {
-    let rn = Math.floor(Math.random() * 100);
-    ws.send({id:ws.id, topic:ws.topic, value:rn});
-  });
-
-  // common read/write resource 
-  server.dataSource('/machine-1', (ws) => {
-    let data = { id:ws.id, rootTopic:ws.rootTopic, subTopic:ws.subTopic }
-
-    if(ws.topic === '/machine-1/sensor-1'){
-      data.type = 'sensor-1';
-      data.value = Math.floor(Math.random() * 200);
-    }
-    else if(ws.topic === '/machine-1/sensor-2'){
-      data.type = 'sensor-2';
-      data.value = Math.floor(Math.random() * 400);
-    }
-    else if(ws.topic === '/machine-1' && ws.payload){
-      data.type = ws.payload.type;
-      data.value = ws.payload.value;
-    }  
-    ws.send(data);
-  });
-});
-```
-
-#### 2. Start server 1 application.
-
-```js
-$ node server.js
-```
-
-### Server 2 Setup
-
-#### 1. Save the code below as *server.js* in your server 2 project directory.
-
-```js
-const { Server } = require('m2m');
-
-let server = new Server(200);
-
-server.connect(() => {
-
-  // publish resource
-  server.pub('random-number', (ws) => {
-    let rn = Math.floor(Math.random() * 100);
-    ws.send({id:ws.id, topic:ws.topic, value:rn});
-  });
-
-  // http get resource 
-  server.get('/update-server-data/:id/new-data/:data', (req, res) => {
-    res.send({id:res.id, query:req.query, params:req.params});
-  });
-
-  // http get resource
-  server.get('/device-state', (req, res) => {
-    res.send({id:res.id, path:res.path, query:req.query, params:req.params, state:'off'});
-  });
-
-  // http post resource 
-  server.post('/machine-control/:id/actuator/:number/action/:state', (req, res) => {
-    res.send({id:res.id, path:res.path, query:req.query, params:req.params});
-  });    
-});
-```
-
-#### 2. Start server 2 application.
-
-```js
-$ node server.js
-```
-
-### Client Setup
-
-#### 1. Save any of the code below as *client.js* in your client project directory.
-
-**Method 1**
-
-```js
-const m2m = require('m2m');
-
-let client = new m2m.Client();
-// or
-//let client = new m2m.Cloud({type:'client', name:'cloud-client-1'});
-
-const main = async () => {
-  let result = await client.connect();
-  console.log(result); // success
-
-  let c1 = client.access(100);
-  let c2 = client.access(200);
-
-  let s1 = await c1.read('/machine-1/sensor-1')
-  console.log(s1)
-
-  let s2 = await c1.read('/machine-1/sensor-2')
-  console.log(s2)
-
-  let s3 = await c1.write('/machine-1', {type:'root topic', value:350})
-  console.log(s3)
-
-  let gr = await c2.get('/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
-  console.log(gr)
-
-  let pr = await c2.post('/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
-  console.log(pr)
-}
-
-main();
-```
-**Method 2**
-
-```js
-const m2m = require('m2m');
-
-//let client = new m2m.Client();
-// or
-let client = new m2m.Cloud({type:'client', name:'cloud-client-1'});
-
-client.connect()
-.catch(console.log)
-.then(console.log) // success
-.then(() => {
-
-  client.read(100, '/machine-1/sensor-1')
-  .catch(console.log)
-  .then(console.log)
-
-  client.read(100, '/machine-1/sensor-2')
-  .catch(console.log)
-  .then(console.log)
-
-  client.write(100, '/machine-1', {type:'root topic', value:350})
-  .catch(console.log)
-  .then(console.log)
-
-  client.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
-  .catch(console.log)
-  .then(console.log)
-  
-  client.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
-  .catch(console.log)
-  .then(console.log)
-})
-```
-
-#### 3. Start client application.
-```js
-$ node client.js
-```
-You should get a near similar output result as shown below.
-```js
-{ id: 100, subTopic: '/sensor-1', type: 'sensor-1', value: 126 }
-{ id: 100, subTopic: '/sensor-2', type: 'sensor-2', value: 373 }
-{
-  id: 100,
-  rootTopic: '/machine-1',
-  subTopic: '',
-  type: 'root topic',
-  value: 350
-}
-{
+result1 { id: 100, topic: 'read-server-msg', message: 'node-m2m is awesome' }
+result2 { id: 100, topic: 'write-server-msg', message: 'node-m2m is awesome' }
+result3 { id: 100, topic: 'read-server-msg', message: 'node-m2m is awesome' }
+get result {
   id: 200,
   query: { name: 'Rv' },
   params: { id: '320', data: '{"pet":"cat","name":"Captain"}' }
 }
-{
+post result {
   id: 200,
   path: '/machine-control/150/actuator/5/action/on?name=Ed',
   query: { name: 'Ed' },
-  params: { id: '150', number: '5', state: 'on' },
-  body: { id: 200, state: 'true' }
+  params: { id: '150', number: '5', state: 'on' }
 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 60 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 31 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 40 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 46 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 31 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 94 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 38 }
+client2 unsub true
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 17 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 29 }
+client1 unsub true
 
 ```
-
 <br>
 
 ## Cloud Browser Client
+
 <br>
 
-Using the client-server example, &nbsp;we will use a browser client to access the available resources from the remote servers.
-## Browser Client Setup
+Using the available resources from the example above.
+### Browser Client Setup
 
 #### 1. Login to [node-m2m](https://www.node-m2m.com/m2m/account/login) and create a web access token. 
 
@@ -454,36 +310,16 @@ $ npm install m2m
 
 From `node_modules/m2m/dist` directory, &nbsp;copy `node-m2m.min.js` file into your web server's public javascript directory.
 
-<!--
-Include `node-m2m.min.js` on your HTML file `<script src="YOUR_SCRIPT_PATH/node-m2m.min.js"></script>`.
-
-This will create a global **NodeM2M** object. 
--->
-
 #### 3. Create a client instance from the global NodeM2M object.
-
-<!-- 
-// Protect your access token at all times  
-var tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
- 
-//var client = new NodeM2M.Client();
-// new 1/15/23
-//var client = new NodeM2M().createClient(); // ok
-  
-//var m2m = NodeM2M(); // ok
-//var client = m2m.createClient(); // ok
--->
 
 ```js
 <script src="/javascripts/node-m2m.min.js"></script>
 
 <script> 
 
-const { createClient, Cloud } = NodeM2M(); 
+const { Cloud } = NodeM2M(); 
 
-let client = createClient();
-// or
-//let client = new Cloud({type:'client', name:'cloud-browser-client', location:'Austin, Texas'}) 
+let cc = new Cloud({type:'client', name:'cloud-browser-client', location:'Austin, Texas'}) 
 
 // web access token
 let tkn = 'fce454138116159a6ad9a4234e71de810a1087fa9e7fbfda74503d9f52616fc5';
@@ -492,21 +328,51 @@ client.connect({server:'https://www.node-m2m.com', accessTkn:tkn})
 .catch(console.log)
 .then(console.log) // success
 .then(async () => {   
+	try{
+		let r1 = await cc.read(100, 'read-server-msg')
+		console.log('result1', r1)
 
-   client.read(100, '/machine-1/sensor-1')
-  .then(console.log)
+		let r2 = await cc.write(100, 'write-server-msg', {message:'node-m2m is awesome'})
+		console.log('result2', r2)
 
-  client.read(100, '/machine-1/sensor-2')
-  .then(console.log)
+		let r3 = await cc.read(100, 'read-server-msg')
+		console.log('result3', r3)
 
-  client.write(100, '/machine-1', {type:'root topic', value:350})
-  .then(console.log)
+		let gr = await cc.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+		console.log('get result', gr)
 
-  client.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
-  .then(console.log)
-  
-  client.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
-  .then(console.log)
+		let pr = await cc.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
+		console.log('post result', pr)
+	}
+	catch(e){
+		console.log('cloud client error:', e.message)
+	}
+	
+	// set a poll interval of 10 secs
+	cc.sub(100, 'random-number', 10000, (data) => {
+		console.log('client1 subscribe random-number', data)
+	})
+
+	// use the default 5 secs poll interval
+	cc.sub(200, 'random-number', (data) => {	
+		console.log('client2 subscribe random-number', data)
+	})
+
+	setTimeout(async () => {
+		try{
+			let result = await cc.unsub(100, 'random-number')
+			console.log('client1 unsub', result)
+		}
+		catch(e){
+			console.log('client1 error:', e.message)
+		}
+	}, 40000)
+
+	setTimeout(async () => {
+		cc.unsub(200, 'random-number', (result) => { 
+			console.log('client2 unsub', result) // true if successful
+		})
+	}, 20000)
 })
 
 </script>
@@ -515,32 +381,33 @@ client.connect({server:'https://www.node-m2m.com', accessTkn:tkn})
 You should get a near similar output result as shown below. 
 ```js
 success
-{ id: 100, subTopic: '/sensor-1', type: 'sensor-1', value: 22 }
-{ id: 100, subTopic: '/sensor-2', type: 'sensor-2', value: 29 }
-{
-  id: 100,
-  rootTopic: '/machine-1',
-  subTopic: '',
-  type: 'root topic',
-  value: 350
-}
-{
+result1 { id: 100, topic: 'read-server-msg', message: 'node-m2m is awesome' }
+result2 { id: 100, topic: 'write-server-msg', message: 'node-m2m is amazing' }
+result3 { id: 100, topic: 'read-server-msg', message: 'node-m2m is amazing' }
+get result {
   id: 200,
   query: { name: 'Rv' },
   params: { id: '320', data: '{"pet":"cat","name":"Captain"}' }
 }
-{
+post result {
   id: 200,
-  path: '/machine-control/m120/actuator/25/action/on?name=Ed',
+  path: '/machine-control/150/actuator/5/action/on?name=Ed',
   query: { name: 'Ed' },
-  params: { id: '150', number: '5', state: 'on' },
-  body: { id: 200, state: 'true' }
+  params: { id: '150', number: '5', state: 'on' }
 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 71 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 44 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 10 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 87 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 35 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 44 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 100 }
+client2 subscribe random-number { id: 200, topic: 'random-number', value: 46 }
+client2 unsub true
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 30 }
+client1 subscribe random-number { id: 100, topic: 'random-number', value: 43 }
+true
 ```
-<br>
-
-<!--Check the [m2m browser client web application quick tour](https://github.com/EdAlegrid/m2m-browser-client-demo) for a complete web application using a browser client.-->
-
 <br>
 
 
