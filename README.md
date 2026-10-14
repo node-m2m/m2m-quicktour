@@ -94,7 +94,7 @@ Connect using async/await
 ```js
 const m2m = require('m2m')
 
-let cs = m2m.Cloud({type:'server', port:200}) 
+let cs = new m2m.Cloud({type:'server', port:200}) 
 
 function genRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
@@ -104,7 +104,8 @@ let main = async () => {
   let result = await cs.connect()
   console.log(result) // success
 
-  cs.publish('random-number', (ws) => {
+  // use the shorthand pub method instead of publish
+  cs.pub('random-number', (ws) => {
     let rn = genRandomInt(10, 50)
     ws.send({id:ws.id, topic:ws.topic, value:rn})
   })
@@ -139,7 +140,7 @@ Connect using promise
 ```js
 const m2m = require('m2m')
 
-let cc = m2m.Cloud({type:'client', name:'cloud-client-1'})
+let cc = new m2m.Cloud({type:'client', name:'cloud-client-1'})
 
 m2m.connect()
 .then(console.log) // success
@@ -202,7 +203,7 @@ m2m.connect()
 ```js
 const m2m = require('m2m')
 
-let cc = m2m.Cloud({type:'client', name:'cloud-client-2'})
+let cc = new m2m.Cloud({type:'client', name:'cloud-client-1'})
 
 cc.connect()
 .then(console.log) // success
