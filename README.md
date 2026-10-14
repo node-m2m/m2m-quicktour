@@ -40,7 +40,7 @@ let serverMsg = 'node-m2m is amazing'
 
 // Generate a random number
 function genRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 m2m.connect((result) => {
@@ -97,7 +97,7 @@ const m2m = require('m2m')
 let cs = m2m.Cloud({type:'server', port:200}) 
 
 function genRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 let main = async () => {
