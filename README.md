@@ -117,7 +117,9 @@ let main = async () => {
 
   // http post resource with '/machine-control/:id/actuator/:number/action/:state' path
   cs.post('/machine-control/:id/actuator/:number/action/:state', (req, res) => {
-    res.send({id:res.id, path:res.path, query:req.query, params:req.params})
+    if(req.body){
+      res.send({id:res.id, path:res.path, query:req.query, params:req.params, body:req.body})
+    }
   })    
 }
 
