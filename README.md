@@ -278,6 +278,7 @@ post result {
   path: '/machine-control/150/actuator/5/action/on?name=Ed',
   query: { name: 'Ed' },
   params: { id: '150', number: '5', state: 'on' }
+  body: { id: 200, state: 'true' }
 }
 client1 subscribe random-number { id: 100, topic: 'random-number', value: 60 }
 client2 subscribe random-number { id: 200, topic: 'random-number', value: 31 }
@@ -396,7 +397,8 @@ post result {
   id: 200,
   path: '/machine-control/150/actuator/5/action/on?name=Ed',
   query: { name: 'Ed' },
-  params: { id: '150', number: '5', state: 'on' }
+  params: { id: '150', number: '5', state: 'on' },
+  body: { id: 200, state: 'true' }
 }
 client1 subscribe random-number { id: 100, topic: 'random-number', value: 71 }
 client2 subscribe random-number { id: 200, topic: 'random-number', value: 44 }
