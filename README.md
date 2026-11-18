@@ -153,38 +153,55 @@ m2m.connect()
 
   try{
     let r1 = await c1.read('read-server-msg')
-    console.log('result1', r1)
+    console.log('c1 result1', r1)
 
     let r2 = await c1.write('write-server-msg', {message:'node-m2m is awesome'})
-    console.log('result2', r2)
+    console.log('c1 result2', r2)
 
     let r3 = await c1.read('read-server-msg')
-    console.log('result3', r3)
-
-    let gr = await c2.get('/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
-    console.log('get result', gr)
-
-    let pr = await c2.post('/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
-    console.log('post result', pr)
+    console.log('c1 result3', r3)
   }
   catch(e){
-    console.log('cc error:', e.message)
+    console.error('c1 error:', e)
+  }
+
+  try{	  	
+    let gr = await c2.get('/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+    console.log('c2 get result', gr)
+
+    let pr = await c2.post('/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
+    console.log('c2 post result', pr)
+  }
+  catch(e){
+    console.error('c2 error:', e)
   }
 
   // use the default 5 secs poll interval 
   c1.subscribe('random-number', (data) => {
-    console.log('client1 subscribe random-number', data)
+    if(data.error){
+      console.error(data)
+      return
+    }	
+    console.log('c1 subscribe', data)
   })
 
   // use the shorthand sub method instead of subscribe and set the poll interval to 13 secs 
   c2.sub({topic:'random-number', pollInterval:13000}, (data) => {
-    console.log('client2 subscribe random-number', data)
+    if(data.error){
+      console.error(data)
+      return
+    }	
+    console.log('c2 subscribe', data)
   })
 
   setTimeout(async () => {
     // using an asynchronous callback for the result
-    c1.unsubscribe('random-number', (result) => { 
-      console.log('client1 unsub', result) // true if successful
+    c1.unsubscribe('random-number', (result) => {
+      if(result.error){
+        console.error(result)
+        return
+      }	
+      console.log('c1 unsub', result) // true if successful
     })
   }, 20000)
 
@@ -192,10 +209,10 @@ m2m.connect()
     try{
       // use the shorthand unsub method instead of unsubscribe 
       let result = await c2.unsub('random-number')
-      console.log('client2 unsub', result) // true if successful
+      console.log('c2 unsub', result) // true if successful
     }
     catch(e){
-      console.log('client2 error:', e.message)
+      console.error('c2 unsub error:', e)
     }
   }, 40000)
 })
@@ -213,47 +230,64 @@ cc.connect()
 .then(async () => {
   try{
     let r1 = await cc.read(100, 'read-server-msg')
-    console.log('result1', r1)
+    console.log('cc 100 result1', r1)
 
     let r2 = await cc.write(100, 'write-server-msg', {message:'node-m2m is awesome'})
-    console.log('result2', r2)
+    console.log('cc 100 result2', r2)
 
     let r3 = await cc.read(100, 'read-server-msg')
-    console.log('result3', r3)
-
-    let gr = await cc.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
-    console.log('get result', gr)
-
-    let pr = await cc.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
-    console.log('post result', pr)
+    console.log('cc 100 result3', r3)
   }
   catch(e){
-    console.log('cloud client error:', e.message)
+    console.error('cc 100 error:', e)
+  }		
+
+ try{
+    let gr = await cc.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+    console.log('cc 200 get result', gr)
+
+    let pr = await cc.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
+    console.log('cc 200 post result', pr)
+  }
+  catch(e){
+    console.error('cc 200 error:', e)
   }
 	
   // set a poll interval of 10 secs
   cc.sub(100, 'random-number', 10000, (data) => {
-    console.log('client1 subscribe random-number', data)
+    if(data.error){
+      console.error(data)
+      return
+    }	
+    console.log('cc 100 subscribe', data)
   })
 
   // use the default 5 secs poll interval
-  cc.sub(200, 'random-number', (data) => {	
-    console.log('client2 subscribe random-number', data)
+  cc.sub(200, 'random-number', (data) => {
+    if(data.error){
+      console.error(data)
+      return
+    }	
+    console.log('cc 200 subscribe', data)
   })
 
   setTimeout(async () => {
     try{
       let result = await cc.unsub(100, 'random-number')
-      console.log('client1 unsub', result)
+      console.log('cc 100 unsub', result)
     }
     catch(e){
-      console.log('client1 error:', e.message)
+      console.error('cc 100 unsub error:', e)
     }
   }, 40000)
 
   setTimeout(async () => {
-    cc.unsub(200, 'random-number', (result) => { 
-      console.log('client2 unsub', result) // true if successful
+    cc.unsub(200, 'random-number', (result) => {
+      if(result.error){
+        console.error(result)
+        return
+      }	
+      console.log('cc 200 unsub', result) // true if successful
     })
   }, 20000)
 })
@@ -334,47 +368,64 @@ client.connect({server:'https://www.node-m2m.com', accessTkn:tkn})
 .then(async () => {   
   try{
     let r1 = await cc.read(100, 'read-server-msg')
-    console.log('result1', r1)
+    console.log('cc 100 result1', r1)
 
     let r2 = await cc.write(100, 'write-server-msg', {message:'node-m2m is awesome'})
-    console.log('result2', r2)
+    console.log('cc 100 result2', r2)
 
     let r3 = await cc.read(100, 'read-server-msg')
-    console.log('result3', r3)
-
-    let gr = await cc.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
-    console.log('get result', gr)
-
-    let pr = await cc.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
-    console.log('post result', pr)
+    console.log('cc 100 result3', r3)
   }
   catch(e){
-    console.log('cloud client error:', e.message)
+    console.error('cc 100 error:', e)
+  }
+
+ try{
+    let gr = await cc.get(200, '/update-server-data/320/new-data/'+JSON.stringify({pet:'cat', name:'Captain'})+'?name=Rv')
+    console.log('cc 200 get result', gr)
+
+    let pr = await cc.post(200, '/machine-control/150/actuator/5/action/on?name=Ed', {id:200, state:'true'})
+    console.log('cc 200 post result', pr)
+  }
+  catch(e){
+    console.error('cc 200 error:', e)
   }
 	
   // set a poll interval of 10 secs
   cc.sub(100, 'random-number', 10000, (data) => {
-    console.log('client1 subscribe random-number', data)
+    if(data.error){
+      console.error(data)
+      return	 
+    }
+    console.log('cc 100 subscribe', data)
   })
 
   // use the default 5 secs poll interval
-  cc.sub(200, 'random-number', (data) => {	
-    console.log('client2 subscribe random-number', data)
+  cc.sub(200, 'random-number', (data) => {
+    if(data.error){
+      console.error(data)
+      return	 
+    }
+    console.log('cc 200 subscribe', data)
   })
 
   setTimeout(async () => {
     try{
       let result = await cc.unsub(100, 'random-number')
-      console.log('client1 unsub', result)
+      console.log('cc 100 unsub', result)
     }
     catch(e){
-      console.log('client1 error:', e.message)
+      console.error('cc 100 unsub error:', e)
     }
   }, 40000)
 
   setTimeout(async () => {
-    cc.unsub(200, 'random-number', (result) => { 
-      console.log('client2 unsub', result) // true if successful
+    cc.unsub(200, 'random-number', (result) => {
+      if(result.error){
+        console.error(result)
+        return	 
+      }
+      console.log('cc 200 unsub', result) // true if successful
     })
   }, 20000)
 })
